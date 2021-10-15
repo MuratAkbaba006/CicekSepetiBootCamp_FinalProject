@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDropzone } from 'react-dropzone';
 import image from '../../assets/ProductForm/Group 6911.svg';
-import { useDispatch,useSelector } from 'react-redux';
-import {PostImage} from '../../actions/UploadForm'
+import { useDispatch, useSelector } from 'react-redux';
+import { PostImage } from '../../actions/UploadForm';
 import { Line, Circle } from 'rc-progress';
 const UploadImage = () => {
   const [data, setFile] = useState(null);
-  const [progress,setProgress] = useState(1);
+  const [progress, setProgress] = useState(1);
+  const [isCompleteUpload, setIsCompleteUpload] = useState(false);
   const dispatch = useDispatch();
   const url = useSelector((state) => state.form.imageUrl);
- console.log(progress);
+  console.log(progress);
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: 'image/*',
     noClick: true,
@@ -23,30 +24,42 @@ const UploadImage = () => {
         })
       );
     },
-    onDropAccepted:(files) =>{
+    onDropAccepted: (files) => {
       let datam = new FormData();
-      datam.append('file',files[0]);
-      dispatch(PostImage(datam,setProgress,progress))
-    }
+      datam.append('file', files[0]);
+      dispatch(PostImage(datam, setProgress, setIsCompleteUpload));
+    },
   });
 
+  const handleClickDelete = () => {
+    setFile(null);
+    setIsCompleteUpload(false);
+    setProgress(0);
+  };
 
-  if (data !== null && progress===0) {
+  if (isCompleteUpload === true) {
     return (
       <UploadedImage>
         <img src={data.url} />
-        <span onClick={()=>setFile(null)}>X</span>
+        <span onClick={handleClickDelete}>X</span>
       </UploadedImage>
     );
   }
-  if(data !== null && progress<100 && progress>0)
-  {
-    return <Line percent={progress} strokeWidth="4" strokeColor="#D3D3D3" />
+  if (data !== null && progress < 100) {
+    return (
+      <ProgressArea>
+        <p>%{progress}</p>
+        <Line percent={progress} strokeWidth="4" strokeColor="#4B9CE2" />
+        {
+          isCompleteUpload !== true && <div>Loading...</div>
+        }
+      </ProgressArea>
+    );
   }
   return (
     <UploadImageContainer {...getRootProps()}>
       <img src={image} alt="" />
-      <input  {...getInputProps()} />
+      <input {...getInputProps()} />
       <p>Sürükleyip bırakarak yükle</p>
       <p>veya</p>
       <div onClick={open}>Görsel Seçin</div>
@@ -81,18 +94,35 @@ const UploadImageContainer = styled.div`
 `;
 
 const UploadedImage = styled.div`
-  position:relative;
-  margin-left:8px;
+  position: relative;
+  margin-left: 8px;
   img {
     width: 40%;
     justify-content: start;
   }
-  span{
-    position:absolute;
-    left:37%;
+  span {
+    position: absolute;
+    left: 37%;
     background-color: black;
-    color:#ffffff;
-    cursor:pointer;
-  };
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 5px;
+  }
 `;
 
+
+const ProgressArea = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+width: 80%;
+p{
+  margin:0;
+  color:#525252;
+  font-size: 12px;
+}
+div{
+  font-size: 12px;
+  color:#525252;
+}
+`

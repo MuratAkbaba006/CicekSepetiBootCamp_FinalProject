@@ -12,7 +12,7 @@ const Header = () => {
       <div>
         <ButtonContainer>
         <img src={plus}></img>
-        <p>ÜrünEkle</p>
+        <p onClick={() => history.push('/upload_product')}>ÜrünEkle</p>
         </ButtonContainer>
         <ButtonContainer onClick={() => history.push('/profile')}>
           <img src={profile} alt="" />
@@ -59,5 +59,6 @@ p{
 font-size: 15px;
 margin: 0 7px;
 width: 100%;
+cursor:pointer;
 }
 `
