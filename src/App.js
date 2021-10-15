@@ -7,6 +7,7 @@ import Register from './pages/Register/Register';
 import ProtectedRoute from './routes/ProtectedRoute';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Profile from './pages/Profile/Profile';
+import UploadProduct from './pages/UploadProduct/UploadProduct';
 const App = () => {
   return (
     <Router>
@@ -18,6 +19,9 @@ const App = () => {
           <Route path="/detail/:product_id" component={ProductDetail} />
           <ProtectedRoute exact path="/profile" >
             <Profile/>
+          </ProtectedRoute>
+          <ProtectedRoute path="/upload_product">
+            <UploadProduct/>
           </ProtectedRoute>
         </Switch>
       </div>

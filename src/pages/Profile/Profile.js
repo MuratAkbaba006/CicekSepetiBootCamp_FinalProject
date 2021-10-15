@@ -45,11 +45,11 @@ const Profile = () => {
             </ContentTitle>
           ))}
         </ContentTitleArea>
-        <>
+        <OffersArea>
           {
             givenOffers.map((offer) => <Offer key={offer.id} offer={offer}/>)
           }
-        </>
+        </OffersArea>
       </Content>
     </ProfileContainer>
   );
@@ -105,3 +105,7 @@ const ContentTitle = styled.div`
   font-size: 15px;
 `;
 
+const OffersArea = styled.div`
+margin-top: 10px;
+display: flex;
+`;
