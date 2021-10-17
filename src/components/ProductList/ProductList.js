@@ -7,7 +7,6 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.product.status)
   const filter = useSelector((state) => state.product.filteredproductsList)
-  console.log(filter);
   useEffect(() => {
     if(status === 'idle')
     {

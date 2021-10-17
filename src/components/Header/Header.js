@@ -10,9 +10,9 @@ const Header = () => {
     <HeaderContainer>
       <img src={logo} alt="" onClick={() => history.push('/') } />
       <div>
-        <ButtonContainer>
+        <ButtonContainer onClick={() => history.push('/upload_product')}>
         <img src={plus}></img>
-        <p onClick={() => history.push('/upload_product')}>ÜrünEkle</p>
+        <p >ÜrünEkle</p>
         </ButtonContainer>
         <ButtonContainer onClick={() => history.push('/profile')}>
           <img src={profile} alt="" />

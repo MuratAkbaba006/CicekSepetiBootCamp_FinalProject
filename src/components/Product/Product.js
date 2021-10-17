@@ -5,7 +5,6 @@ import { useHistory } from 'react-router';
 const Product = ({ product }) => {
   const history = useHistory();
   const handleClick = () => {
-    console.log(product.id)
     history.push(`/detail/${product.id}`)
   }
 

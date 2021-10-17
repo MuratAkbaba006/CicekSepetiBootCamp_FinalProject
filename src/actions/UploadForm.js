@@ -16,6 +16,7 @@ export const PostImage =
       .then((res) => {
         dispatch({ type: 'POST_IMAGE_SUCCESS', payload: res.data });
         setProgress(100);
+        console.log(res);
         setIsCompleteUpload(true);
         setTimeout(() => {
           setProgress(0);

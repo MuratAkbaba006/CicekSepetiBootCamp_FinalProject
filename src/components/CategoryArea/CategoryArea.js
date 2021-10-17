@@ -4,6 +4,7 @@ import { getAllCategories } from '../../actions/Category'
 import { getByCategory } from '../../actions/Product'
 import {UpperFirstLetter} from '../../utils/utils'
 import { CategoryAreaContainer,Category } from './ScCategoryArea'
+
 const CategoryArea = () => {
   const categories = useSelector((state) => state.category.categories)
   const allcategories = [{id:1,title:'Hepsi'},...categories,{id:2,title:'Diğer'}]

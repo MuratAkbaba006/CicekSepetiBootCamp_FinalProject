@@ -1,4 +1,4 @@
-import { AxiosPublic,AxiosPrivate } from '../config/AxiosBase';
+import { AxiosPublic, AxiosPrivate } from '../config/AxiosBase';
 
 export const getAllProducts = () => (dispatch) => {
   dispatch({ type: 'FETCH_ALL_PRODUCTS_START' });
@@ -27,8 +27,18 @@ export const getSingleProduct = (product_id) => (dispatch) => {
     );
 };
 
-export const postOffer = (product_id,offer) => (dispatch) => {
-  AxiosPrivate.post(`/product/offer/${product_id}`,{offeredPrice:offer}).then(()=>{
-    dispatch({type:'POST_OFFER_SUCCESS'})
+export const postOffer = (product_id, offer) => (dispatch) => {
+  AxiosPrivate.post(`/product/offer/${product_id}`, {
+    offeredPrice: offer,
+  }).then((res) => {
+    dispatch({ type: 'POST_OFFER_SUCCESS' });
+    console.log(res);
+  });
+};
+
+export const buyProduct = (product_id) => (dispatch) => {
+  AxiosPrivate.put(`/product/purchase/${product_id}`).then((res) => {
+    dispatch({type: 'BUY_PRODUCT_SUCCESS',payload:res.data})
+    console.log(res)
   })
 }
