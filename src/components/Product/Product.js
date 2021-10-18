@@ -1,12 +1,16 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled from 'styled-components';
 import { UpperFirstLetter } from '../../utils/utils';
 import { useHistory } from 'react-router';
+import { useDispatch} from 'react-redux';
 const Product = ({ product }) => {
   const history = useHistory();
+  const dispatch= useDispatch();
+
   const handleClick = () => {
     history.push(`/detail/${product.id}`)
   }
+
 
 
   return (

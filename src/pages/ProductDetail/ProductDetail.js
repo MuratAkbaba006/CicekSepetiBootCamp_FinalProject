@@ -1,29 +1,66 @@
-import React, { useEffect, useRef } from 'react';
-import { useHistory, useParams } from 'react-router';
+import React, { useEffect, useRef,useState } from 'react';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from '../../components/Header/Header';
 import { getSingleProduct } from '../../actions/Product';
 import styled from 'styled-components';
 import { UpperFirstLetter } from '../../utils/utils';
 import Modal from '../../components/Modal/Modal';
-import cross from '../../assets/ProductDetail/Group 6618.svg';
 import OfferModal from '../../components/OfferModal/OfferModal';
+import { getGivenOffers,cancelOffer } from '../../actions/Account';
+import BuyModal from '../../components/BuyModal/BuyModal';
 const ProductDetail = () => {
   const { product_id } = useParams();
   const modalRef = useRef();
+  const buyModalRef = useRef();
+  const [isGivenOffer,setIsGivenOffer] = useState(false);
+  const [offer,setOffer] = useState(null);
   const product = useSelector((state) => state.product.currentProduct);
-  const status = useSelector((state) => state.product.status);
   const dispatch = useDispatch();
-
+  const givenOffers = useSelector((state) => state.account.givenOffers);
   const openModal = () => {
     modalRef.current.openModal();
   };
-  useEffect(() => {
-    dispatch(getSingleProduct(product_id));
-  }, [dispatch, product_id]);
+  useEffect(  ()  => {
+     //isGivenOfferControl();
+     dispatch(getSingleProduct(product_id));
+     dispatch(getGivenOffers())
+  }, []);
 
+  useEffect(() => {
+    isGivenOfferControl();
+  },[givenOffers])
+  const openBuyModal = () => {
+    buyModalRef.current.openModal();
+  }
+
+  const isGivenOfferControl = () => {
+    if(givenOffers.length===0)
+    {
+      setIsGivenOffer(false);
+      setOffer(null);
+    }
+    else{
+      givenOffers.map((offer) => {
+        console.log('offer liste')
+        if (offer.product.id === product_id) {
+          setIsGivenOffer(true);
+          setOffer({price:offer.offeredPrice,id:offer.id})
+        }
+      });
+    }
+
+  };
+
+  const handleCancelOffer = () => {
+    dispatch(cancelOffer(offer.id));
+
+  }
+  //console.log(givenOffers);
   console.log(product);
-  if (product === null) {
+  //console.log(isGivenOffer);
+  //console.log(offer);
+  if (product === null  ) {
     return <div>Loafinf...</div>;
   }
   return (
@@ -50,10 +87,29 @@ const ProductDetail = () => {
             </div>
           </Info>
           <Price>{product.price} TL</Price>
-          <ButtonArea>
-            <button>Satın Al</button>
-            {product.isOfferable && <button onClick={openModal}>Teklif Ver</button>}
-          </ButtonArea>
+          {product.isSold === true && <div>Ürün Satıldı Kardeş</div>}
+          {product.isSold === false && isGivenOffer === true && (
+            <div>Teklif:{offer.price}</div>
+          )}
+          {(product.isSold === false &&
+            isGivenOffer !==
+              true) && (
+                <ButtonArea>
+                  <button onClick={openBuyModal}>Satın Al</button>
+                  {product.isOfferable && (
+                    <button onClick={openModal}>Teklif Ver</button>
+                  )}
+                </ButtonArea>
+              )}
+
+          {product.isSold === false &&
+            isGivenOffer ===
+              true &&(
+                <ButtonArea>
+                  <button onClick={openBuyModal}>Satın Al</button>
+                  <button onClick={handleCancelOffer}>Teklifi Geri çek</button>
+                </ButtonArea>
+              )}
           <Description>
             <label htmlFor="">Açıklama</label>
             <p>{product.description}</p>
@@ -61,7 +117,10 @@ const ProductDetail = () => {
         </Content>
       </ProductArea>
       <Modal ref={modalRef}>
-        <OfferModal product={product} modalRef={modalRef}/>
+        <OfferModal product={product} modalRef={modalRef} setIsGivenOffer={setIsGivenOffer} isGivenOfferControl={isGivenOfferControl} setOffers={setOffer} currentOffer={offer}/>
+      </Modal>
+      <Modal ref={buyModalRef}>
+        <BuyModal modalRef={buyModalRef} product={product} />
       </Modal>
     </ProductDetailContainer>
   );
@@ -172,7 +231,6 @@ const Description = styled.div`
 const ModalTitle = styled.div`
   display: flex;
   justify-content: space-between;
-
   p {
     font-size: 25px;
     font-weight: bold;

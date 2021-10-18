@@ -16,6 +16,7 @@ const ProductsReducer = (state = ProductState,action) => {
       }
     }
     case 'FETCH_ALL_PRODUCTS_SUCCESS':{
+      console.log('tüm ürünleri')
       return{
         ...state,
         status:'succeded',
@@ -37,17 +38,21 @@ const ProductsReducer = (state = ProductState,action) => {
       }
     }
     case 'FETCH_BY_CATEGORIES_SUCCESS':{
-     if(action.payload === 1)
+      console.log(action.category_id)
+     if(action.category_id === '1')
      {
-
+      console.log('alayı')
       return{
         ...state,
+        products:action.payload,
         status:'succeded',
-        filteredproductsList:state.products
+        filteredproductsList:action.payload
       }
      }
      else{
-      const filteredProducts = state.products.filter((product) => product.category.id === action.payload)
+      console.log('filtreleme')
+      const filteredProducts = action.payload.filter((product) => product.category.id === action.category_id)
+      console.log(filteredProducts);
       return{
         ...state,
         status:'succeded',
@@ -75,12 +80,7 @@ const ProductsReducer = (state = ProductState,action) => {
         error:action.payload
       }
     }
-    case 'POST_OFFER_SUCCESS':{
-      return{
-        ...state,
-        status:'succeded'
-      }
-    }
+
     default:
       return state
   }

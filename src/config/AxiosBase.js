@@ -2,15 +2,15 @@ import axios from "axios";
 import Cookies from "js-cookie";
 const {auth_token} = Cookies.get();
 export const AxiosAuth = axios.create({
-  baseURL:'http://bootcampapi.techcs.io/api/fe/v1/authorization'
+  baseURL:'https://bootcampapi.techcs.io/api/fe/v1/authorization'
 })
 
 export const AxiosPublic = axios.create({
-  baseURL:'http://bootcampapi.techcs.io/api/fe/v1'
+  baseURL:'https://bootcampapi.techcs.io/api/fe/v1'
 })
 
 export const AxiosPrivate =  axios.create({
-  baseURL:'http://bootcampapi.techcs.io/api/fe/v1',
+  baseURL:'https://bootcampapi.techcs.io/api/fe/v1',
   headers:{"Authorization" : `Bearer ${auth_token}`}
 })
 

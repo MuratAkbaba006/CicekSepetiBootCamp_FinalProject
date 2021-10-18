@@ -1,19 +1,22 @@
 import React, { useEffect } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
-import {getAllProducts} from '../../actions/Product'
+import {getAllProducts,getByCategory} from '../../actions/Product'
 import styled from 'styled-components'
 import Product from '../Product/Product'
+import { useLocation } from 'react-router'
 const ProductList = () => {
+  const urlParams = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
   const status = useSelector((state) => state.product.status)
-  const filter = useSelector((state) => state.product.filteredproductsList)
-  useEffect(() => {
-    if(status === 'idle')
-    {
-      dispatch(getAllProducts())
-    }
+  const filter = useSelector((state) => state.product.filteredproductsList);
 
-  },[dispatch])
+  // useEffect(() => {
+  //   if(status === 'idle' && filter.length ===0)
+  //   {
+  //     dispatch(getByCategory(urlParams.get('category')))
+  //   }
+
+  // },[dispatch])
 
   if(status === 'loading')
   {

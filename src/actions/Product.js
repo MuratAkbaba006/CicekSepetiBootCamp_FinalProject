@@ -1,6 +1,7 @@
 import { AxiosPublic, AxiosPrivate } from '../config/AxiosBase';
 
-export const getAllProducts = () => (dispatch) => {
+export const getAllProducts = ({where}) => (dispatch) => {
+  console.log(where);
   dispatch({ type: 'FETCH_ALL_PRODUCTS_START' });
   AxiosPublic.get('/product/all')
     .then((res) => {
@@ -12,8 +13,12 @@ export const getAllProducts = () => (dispatch) => {
 };
 
 export const getByCategory = (category_id) => (dispatch) => {
+  console.log('from action',category_id);
   dispatch({ type: 'FETCH_BY_CATEGORIES_START' });
-  dispatch({ type: 'FETCH_BY_CATEGORIES_SUCCESS', payload: category_id });
+  AxiosPublic.get('/product/all').then((res) => {
+  dispatch({ type: 'FETCH_BY_CATEGORIES_SUCCESS', payload: res.data, category_id:category_id });
+
+  })
 };
 
 export const getSingleProduct = (product_id) => (dispatch) => {
@@ -27,16 +32,10 @@ export const getSingleProduct = (product_id) => (dispatch) => {
     );
 };
 
-export const postOffer = (product_id, offer) => (dispatch) => {
-  AxiosPrivate.post(`/product/offer/${product_id}`, {
-    offeredPrice: offer,
-  }).then((res) => {
-    dispatch({ type: 'POST_OFFER_SUCCESS' });
-    console.log(res);
-  });
-};
+
 
 export const buyProduct = (product_id) => (dispatch) => {
+  console.log(product_id);
   AxiosPrivate.put(`/product/purchase/${product_id}`).then((res) => {
     dispatch({type: 'BUY_PRODUCT_SUCCESS',payload:res.data})
     console.log(res)

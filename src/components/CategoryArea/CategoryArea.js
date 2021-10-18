@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { getAllCategories } from '../../actions/Category'
-import { getByCategory } from '../../actions/Product'
+import { getByCategory,getAllProducts } from '../../actions/Product'
 import {UpperFirstLetter} from '../../utils/utils'
 import { CategoryAreaContainer,Category } from './ScCategoryArea'
-
+import { useHistory,useParams,useLocation } from 'react-router'
 const CategoryArea = () => {
+  const urlParams = new URLSearchParams(useLocation().search);
   const categories = useSelector((state) => state.category.categories)
   const allcategories = [{id:1,title:'Hepsi'},...categories,{id:2,title:'Diğer'}]
-  const [current,setCurrent] = useState('Hepsi')
+  const [current,setCurrent] = useState( urlParams.get('category')===null ? '1':urlParams.get('category'))
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  const handleClick = (e,id) => {
-    console.log(e);
-    setCurrent(e.target.innerText);
-    dispatch(getByCategory(id))
+  const handleClick = (e,id,title) => {
+    console.log('handle click');
+    const params = new URLSearchParams();
+    params.append("category",id);
+    history.push({search: params.toString()})
+    console.log(id);
+    setCurrent(id);
+    dispatch(getByCategory(id.toString()))
 
   }
   useEffect(() => {
@@ -22,10 +28,17 @@ const CategoryArea = () => {
     {
       dispatch(getAllCategories())
     }
-  },[dispatch,categories])
+    console.log(current);
+    console.log('useEffect')
+    dispatch(getByCategory(current))
+
+  },[dispatch,categories.current])
+
+
+
   return (
     <CategoryAreaContainer >
-      {allcategories.map((category)=><Category current={current} title={UpperFirstLetter(category.title)} key={category.id} onClick={(event)=>handleClick(event,category.id)}>{UpperFirstLetter(category.title)}</Category>)}
+      {allcategories.map((category)=><Category current={current} id ={category.id} key={category.id} onClick={(event)=>handleClick(event,category.id,category.title)}>{UpperFirstLetter(category.title)}</Category>)}
     </CategoryAreaContainer>
   )
 }

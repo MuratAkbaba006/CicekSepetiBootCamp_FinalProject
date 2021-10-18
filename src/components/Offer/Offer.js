@@ -1,19 +1,23 @@
 import React,{useRef} from 'react';
 import styled from 'styled-components';
-import { rejectOffer, acceptOffer } from '../../actions/Account';
+import { rejectOffer, acceptOffer,getGivenOffers,getReceivedOffers } from '../../actions/Account';
 import { buyProduct } from '../../actions/Product';
 import { useDispatch } from 'react-redux';
 import Modal from '../Modal/Modal';
+import BuyModal from '../BuyModal/BuyModal';
 const Offer = ({ offer, name }) => {
   const dispatch = useDispatch();
   const modalRef= useRef();
   console.log(offer);
   const handleRejectOffer = () => {
     dispatch(rejectOffer(offer.id));
+    dispatch(getReceivedOffers())
   };
 
   const handleAcceptOffer = () => {
     dispatch(acceptOffer(offer.id));
+    dispatch(getReceivedOffers())
+
   };
 
   const handleBuyProduct = () => {
@@ -80,7 +84,9 @@ const Offer = ({ offer, name }) => {
           ? OfferStatusControl(offer.status)
           : ReceivedOfferStatusControl(offer.status,offer.product.isSold)}
       </ButtonArea>
-      <Modal ref={modalRef}></Modal>
+      <Modal ref={modalRef}>
+      <BuyModal modalRef={modalRef} product={offer.product}/>
+      </Modal>
     </OfferContainer>
   );
 };

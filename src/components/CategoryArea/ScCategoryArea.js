@@ -9,8 +9,8 @@ border-bottom: 1px solid #525252;
 
 `
 export const Category = styled.div`
-border-bottom: ${props=>props.current === props.title ? '2px solid #4B9CE2' : ''};
-color:${props=>props.current === props.title ? '#4B9CE2' : '#525252'};
+border-bottom: ${props=>props.current === props.id ? '2px solid #4B9CE2' : ''};
+color:${props=>props.current === props.id ? '#4B9CE2' : '#525252'};
 padding: 3px;
 cursor:pointer;
 `

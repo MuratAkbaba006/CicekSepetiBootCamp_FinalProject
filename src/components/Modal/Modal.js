@@ -65,11 +65,12 @@ const Modal_Box = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-height: 30%;
+  min-height: 20%;
   overflow-y: auto;
   width: 25%;
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 101;
   padding: 10px;
+  border-radius: 8px;
 `;
