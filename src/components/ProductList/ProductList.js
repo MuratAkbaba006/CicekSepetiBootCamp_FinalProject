@@ -4,19 +4,19 @@ import {getAllProducts,getByCategory} from '../../actions/Product'
 import styled from 'styled-components'
 import Product from '../Product/Product'
 import { useLocation } from 'react-router'
+import { addNotification } from '../../actions/Notification'
+import {v4 as uuid} from 'uuid'
 const ProductList = () => {
   const urlParams = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
   const status = useSelector((state) => state.product.status)
   const filter = useSelector((state) => state.product.filteredproductsList);
 
-  // useEffect(() => {
-  //   if(status === 'idle' && filter.length ===0)
-  //   {
-  //     dispatch(getByCategory(urlParams.get('category')))
-  //   }
-
-  // },[dispatch])
+  useEffect(() => {
+    console.log('useEffect dispatch')
+    dispatch(addNotification({id:uuid(),type:'SUCCESS',message:'Başarılı'}))
+    dispatch(addNotification({id:uuid(),type:'WARNING',message:'UYARI'}))
+  },[])
 
   if(status === 'loading')
   {

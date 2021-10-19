@@ -8,6 +8,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Profile from './pages/Profile/Profile';
 import UploadProduct from './pages/UploadProduct/UploadProduct';
+import NotificationContainer from './components/Notification/NotificationContainer';
 const App = () => {
   return (
     <Router>
@@ -24,6 +25,7 @@ const App = () => {
             <UploadProduct/>
           </ProtectedRoute>
         </Switch>
+        <NotificationContainer/>
       </div>
     </Router>
   );
