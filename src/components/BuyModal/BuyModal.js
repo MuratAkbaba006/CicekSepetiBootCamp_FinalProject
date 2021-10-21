@@ -3,13 +3,20 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { buyProduct,getSingleProduct } from '../../actions/Product';
 import { getGivenOffers,getReceivedOffers } from '../../actions/Account';
+import {addNotification} from '../../actions/Notification';
+import {v4 as uuid} from 'uuid'
 const BuyModal = ({modalRef,product}) => {
   const dispatch = useDispatch();
-  const handleBuyProduct = () => {
+  const handleBuyProduct = (e) => {
+    e.stopPropagation();
     dispatch(buyProduct(product.id));
     dispatch(getGivenOffers());
     dispatch(getReceivedOffers());
-    dispatch(getSingleProduct(product.id));
+    setTimeout(() => {
+      dispatch(getSingleProduct(product.id));
+    }, 500);
+    // getSingleProduct endpointi hızlı çalıştığı için güncelleme olmuyordu
+    dispatch(addNotification({id:uuid(),type:'SUCCESS',message:'Satın Alma Başarılı'}))
     modalRef.current.closeModal();
   }
 

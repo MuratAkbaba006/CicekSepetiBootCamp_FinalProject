@@ -12,11 +12,11 @@ const ProductList = () => {
   const status = useSelector((state) => state.product.status)
   const filter = useSelector((state) => state.product.filteredproductsList);
 
-  useEffect(() => {
-    console.log('useEffect dispatch')
-    dispatch(addNotification({id:uuid(),type:'SUCCESS',message:'Başarılı'}))
-    dispatch(addNotification({id:uuid(),type:'WARNING',message:'UYARI'}))
-  },[])
+  // useEffect(() => {
+  //   console.log('useEffect dispatch')
+  //   dispatch(addNotification({id:uuid(),type:'SUCCESS',message:'Başarılı'}))
+  //   dispatch(addNotification({id:uuid(),type:'WARNING',message:'UYARI'}))
+  // },[])
 
   if(status === 'loading')
   {

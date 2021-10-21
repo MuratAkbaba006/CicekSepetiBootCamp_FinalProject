@@ -26,6 +26,7 @@ export const getSingleProduct = (product_id) => (dispatch) => {
   AxiosPublic.get(`/product/${product_id}`)
     .then((res) => {
       dispatch({ type: 'FETCH_SINGLE_PRODUCT_SUCCESS', payload: res.data });
+      console.log(res);
     })
     .catch((error) =>
       dispatch({ type: 'FETCH_SINGLE_PRODUCT_ERROR', payload: error })

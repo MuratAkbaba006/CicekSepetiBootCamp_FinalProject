@@ -7,8 +7,12 @@ import UploadImage from '../UploadImage/UploadImage';
 import { getAllDropdownItem,AddProduct } from '../../actions/UploadForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { UpperFirstLetter } from '../../utils/utils';
+import { addNotification } from '../../actions/Notification';
+import { useHistory } from 'react-router';
+import { v4 as uuid } from 'uuid';
 const UploadProductForm = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [offerOpt, setOfferOpt] = useState(false);
   const colors = useSelector((state) => [
     { title: 'Renk Seçiniz', id: 1 },
@@ -45,6 +49,11 @@ const UploadProductForm = () => {
     categoryId:category,
     description,
     isOfferable:offerOpt,}))
+
+    dispatch(addNotification({id:uuid(),type:'SUCCESS',message:'Ürün Ekleme işlemi Başarılı'}))
+    setTimeout(() => {
+      history.push('/');
+    }, 3000);
   }
   return (
     <FormContainer>
@@ -59,13 +68,13 @@ const UploadProductForm = () => {
           price: 0,
         }}
         validationSchema={Yup.object({
-          productname: Yup.string().required('Bir urün ismi girmelisiniz'),
-          description: Yup.string().required('Açıklama girmelisiniz'),
+          productname: Yup.string().max(100,'Ürün ismi 100 karakterden uzun olamaz').required('Bir urün ismi girmelisiniz'),
+          description: Yup.string().max(500,'Ürün açıklaması 500 karakterden uzun olamaz').required('Açıklama girmelisiniz'),
           category: Yup.string().required('Kategori Seçimi yapmalısınız'),
           brand: Yup.string().required('Marka Seçimi yapmalısınız'),
           color: Yup.string().required('Renk Seçimi yapmalısınız'),
           status: Yup.string().required('Durum Seçimi yapmalısınız'),
-          price: Yup.number().required('Fiyat girmelisiniz'),
+          price: Yup.number().required('Fiyat girmelisiniz').typeError('Fiyat değeri sayı olmalıdır'),
         })}
         onSubmit={handleFormSubmit}
       >
@@ -74,6 +83,7 @@ const UploadProductForm = () => {
           errors,
           handleChange,
           handleSubmit,
+          handleBlur,
           touched,
           dirty,
           isSubmitting,
@@ -89,7 +99,9 @@ const UploadProductForm = () => {
                     id="productname"
                     value={values.productName}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  {(errors.productname && touched.productname) && <Error>{errors.productname}</Error>}
                 </Name>
                 <Description>
                   <label htmlFor="description">Ürün Açıklaması</label>
@@ -98,7 +110,9 @@ const UploadProductForm = () => {
                     id="description"
                     value={values.description}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  {(errors.description && touched.description) && <Error>{errors.description}</Error>}
                 </Description>
                 <SelectAreaOne>
                   <Category>
@@ -108,30 +122,33 @@ const UploadProductForm = () => {
                       id="category"
                       value={values.category}
                       onChange={handleChange}
-                      defaultValue="category"
+                      onBlur={handleBlur}
                     >
                       {categories.map((category) => (
-                        <option key={category.id} value={category.id}>
+                        <option key={category.id} value={category.id === 1 ? '' :category.id}>
                           {UpperFirstLetter(category.title)}
                         </option>
                       ))}
                     </select>
+                  {(errors.category && touched.category) && <Error>{errors.category}</Error>}
                   </Category>
                   <Brand>
                     <label htmlFor="brand">Marka</label>
                     <select
                       name=""
                       id="brand"
-                      defaultValue="marka"
                       value={values.brand}
                       onChange={handleChange}
+                      onBlur={handleBlur}
+
                     >
                       {brands.map((brand) => (
-                        <option key={brand.id} value={brand.id}>
+                        <option key={brand.id} value={brand.id === 1 ? '' :brand.id}>
                           {UpperFirstLetter(brand.title)}
                         </option>
                       ))}
                     </select>
+                  {(errors.brand && touched.brand) && <Error>{errors.brand}</Error>}
                   </Brand>
                 </SelectAreaOne>
                 <SelectAreaTwo>
@@ -142,13 +159,15 @@ const UploadProductForm = () => {
                       id="color"
                       value={values.color}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                     >
                       {colors.map((color) => (
-                        <option key={color.id} value={color.id}>
+                        <option key={color.id} value={color.id === 1 ? '' :color.id}>
                           {UpperFirstLetter(color.title)}
                         </option>
                       ))}
                     </select>
+                  {(errors.color && touched.color) && <Error>{errors.color}</Error>}
                   </Color>
                   <Status>
                     <label htmlFor="status">Kullanım Durumu</label>
@@ -157,13 +176,15 @@ const UploadProductForm = () => {
                       id="status"
                       value={values.status}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                     >
-                      {productStatus.map((category) => (
-                        <option key={category.id} value={category.id}>
-                          {UpperFirstLetter(category.title)}
+                      {productStatus.map((status) => (
+                        <option key={status.id} value={status.id === 1 ? '':status.id}>
+                          {UpperFirstLetter(status.title)}
                         </option>
                       ))}
                     </select>
+                  {(errors.status && touched.status) && <Error>{errors.status}</Error>}
                   </Status>
                 </SelectAreaTwo>
                 <Offer>
@@ -173,7 +194,9 @@ const UploadProductForm = () => {
                     id="price"
                     value={values.price}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  {(errors.price && touched.price) && <Error>{errors.price}</Error>}
                   <div>
                     <label htmlFor="offerOpt">Teklif Opsiyonu</label>
                     <Switch
@@ -205,8 +228,8 @@ const UploadProductForm = () => {
                 justifyContent: 'flex-end',
               }}
             >
-              <button type="submit" disabled={!dirty || isSubmitting}>
-                Onayla
+              <button type="submit" disabled={!dirty || isSubmitting || errors.productname || errors.description || errors.category || errors.brand || errors.color || errors.status || errors.price}>
+                Kaydet
               </button>
             </div>
           </form>
@@ -228,10 +251,21 @@ const FormContainer = styled.div`
   border-radius: 8px;
   button {
     display: flex;
-    background-color: red;
-    width: 30%;
+    background-color: #4B9CE2;
+    width: 22%;
     justify-content: center;
     align-items: center;
+    color:#FFFFFF;
+    margin:10px;
+    border:none;
+    border-radius: 8px;
+    padding:5px;
+    font-size: 18px;
+    font-weight:bold;
+    cursor:pointer;
+    :disabled{
+      cursor:auto
+    }
   }
 `;
 
@@ -241,9 +275,17 @@ const Content = styled.div`
 const ProductDetail = styled.div`
   display: flex;
   width: 55%;
-  border-right: 1px solid green;
+  border-right: 1px solid #F2F2F2;
   flex-direction: column;
   align-items: center;
+  margin-top:5px;
+  h4{
+    color:#525252;
+    font-size:25px;
+    font-weight:bold;
+    width:90%;
+    margin:15px 0px 18px 0px;
+  }
 `;
 
 const ProductImageArea = styled.div`
@@ -251,6 +293,13 @@ const ProductImageArea = styled.div`
   width: 45%;
   flex-direction: column;
   align-items: center;
+  h4{
+    color:#525252;
+    font-size:25px;
+    font-weight:bold;
+    width:90%;
+    margin:15px 0px 18px 0px;
+  }
 `;
 
 const Name = styled.div`
@@ -329,3 +378,8 @@ const Offer = styled(Name)`
     }
   }
 `;
+
+const Error = styled.div`
+text-align: start;
+color:red;
+`

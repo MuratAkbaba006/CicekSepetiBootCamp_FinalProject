@@ -5,22 +5,31 @@ import { buyProduct } from '../../actions/Product';
 import { useDispatch } from 'react-redux';
 import Modal from '../Modal/Modal';
 import BuyModal from '../BuyModal/BuyModal';
+import { useHistory } from 'react-router';
 const Offer = ({ offer, name }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const modalRef= useRef();
   console.log(offer);
-  const handleRejectOffer = () => {
+  const handleRejectOffer = (e) => {
+    e.stopPropagation();
     dispatch(rejectOffer(offer.id));
-    dispatch(getReceivedOffers())
+    setTimeout(() => {
+      dispatch(getReceivedOffers())
+    }, 500);
   };
 
-  const handleAcceptOffer = () => {
+  const handleAcceptOffer = (e) => {
+    e.stopPropagation();
     dispatch(acceptOffer(offer.id));
-    dispatch(getReceivedOffers())
+    setTimeout(() => {
+      dispatch(getReceivedOffers())
+    }, 500);
 
   };
 
-  const handleBuyProduct = () => {
+  const handleBuyProduct = (e) => {
+    e.stopPropagation();
     modalRef.current.openModal();
     //dispatch(buyProduct(offer.product.id))
   }
@@ -38,6 +47,11 @@ const Offer = ({ offer, name }) => {
       return <StatusLabel status={status}>{statusTurkish}</StatusLabel>;
     }
   };
+
+  const handlegoDetail = (e) => {
+    const id = offer.product.id;
+    history.push(`/detail/${id}`)
+  }
 
   const ReceivedOfferStatusControl = (status,isSold) => {
     if (status === 'accepted' && isSold === false) {
@@ -61,7 +75,7 @@ const Offer = ({ offer, name }) => {
     }
   };
   return (
-    <OfferContainer>
+    <OfferContainer onClick={handlegoDetail}>
       <ContentArea>
         <ImageArea>
           <img src={offer.product.imageUrl} alt="" />
@@ -103,6 +117,7 @@ const OfferContainer = styled.div`
   justify-content: space-between;
   padding: 5px;
   box-sizing: border-box;
+  cursor:pointer;
 `;
 
 const ContentArea = styled.div`

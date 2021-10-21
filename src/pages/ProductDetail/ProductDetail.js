@@ -18,6 +18,8 @@ const ProductDetail = () => {
   const product = useSelector((state) => state.product.currentProduct);
   const dispatch = useDispatch();
   const givenOffers = useSelector((state) => state.account.givenOffers);
+  let counter = 0;
+
   const openModal = () => {
     modalRef.current.openModal();
   };
@@ -34,6 +36,7 @@ const ProductDetail = () => {
     buyModalRef.current.openModal();
   }
 
+
   const isGivenOfferControl = () => {
     if(givenOffers.length===0)
     {
@@ -42,10 +45,20 @@ const ProductDetail = () => {
     }
     else{
       givenOffers.map((offer) => {
-        console.log('offer liste')
+        console.log('offer',offer)
+
         if (offer.product.id === product_id) {
           setIsGivenOffer(true);
+          console.log('offer',offer);
           setOffer({price:offer.offeredPrice,id:offer.id})
+        }
+        else{
+          counter ++;
+          if(counter === givenOffers.length)
+          { console.log('counter içi');
+            setIsGivenOffer(false);
+            setOffer(null);
+          }
         }
       });
     }
@@ -54,11 +67,18 @@ const ProductDetail = () => {
 
   const handleCancelOffer = () => {
     dispatch(cancelOffer(offer.id));
+    setTimeout(() => {
+     dispatch(getSingleProduct(product_id));
+     dispatch(getGivenOffers())
 
+    }, 500);
+    setTimeout(() => {
+      isGivenOfferControl();
+    },1000)
   }
   //console.log(givenOffers);
   console.log(product);
-  //console.log(isGivenOffer);
+  console.log(isGivenOffer);
   //console.log(offer);
   if (product === null  ) {
     return <div>Loafinf...</div>;
@@ -87,9 +107,9 @@ const ProductDetail = () => {
             </div>
           </Info>
           <Price>{product.price} TL</Price>
-          {product.isSold === true && <div>Ürün Satıldı Kardeş</div>}
+          {product.isSold === true && <BuyInformation>Bu Ürün Satışta Değil</BuyInformation>}
           {product.isSold === false && isGivenOffer === true && (
-            <div>Teklif:{offer.price}</div>
+            <OfferInformation><label htmlFor="offer">Verilen Teklif: </label>{offer.price} TL</OfferInformation>
           )}
           {(product.isSold === false &&
             isGivenOffer !==
@@ -169,10 +189,13 @@ const Title = styled.div`
   margin-bottom: 18px;
 `;
 const Info = styled.div`
+
   div {
     display: flex;
     align-items: center;
     margin-bottom: 14px;
+    width:50%;
+
     label {
       color: #525252;
       font-size: 15px;
@@ -268,3 +291,30 @@ const SmallproductArea = styled.div`
     color: #525252;
   }
 `;
+
+const Information = styled.div`
+font-size: 18px;
+font-weight: bold;
+width: 50%;
+text-align: center;
+padding: 5px;
+border-radius: 8px;
+margin-top:10px;
+`
+const BuyInformation = styled(Information)`
+background-color: #FFF0E2;
+color:#FAAD60;
+
+`
+
+const OfferInformation = styled(Information)`
+background-color:#F2F2F2;
+font-size:15px;
+color:#525252;
+
+label{
+  color:#B1B1B1;
+  font-weight:600;
+}
+
+`

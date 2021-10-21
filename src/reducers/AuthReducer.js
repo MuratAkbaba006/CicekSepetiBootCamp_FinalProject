@@ -1,7 +1,8 @@
 const AuthState = {
-  auth_token:'',
+  auth_token:{},
   status:'idle',
-  error:null
+  error:null,
+  statusCode:[]
 }
 
 const AuthReducer = (state=AuthState,action) => {
@@ -25,7 +26,8 @@ const AuthReducer = (state=AuthState,action) => {
       return {
         ...state,
         auth_token:action.payload,
-        status:'succeded'
+        status:'succeded',
+        statusCode:{code:action.response.status,url:action.response.config.url}
       }
     }
     case "REGISTER_ERROR":{
@@ -42,16 +44,20 @@ const AuthReducer = (state=AuthState,action) => {
       }
     }
     case "LOGIN_SUCCESS" : {
+      console.log(action.status_code);
       return {
         ...state,
         auth_token:action.payload,
-        status:'succeded'
+        status:'login_success',
+        statusCode:{code:action.response.status,url:action.response.config.url}
       }
     }
     case "LOGIN_ERROR":{
       return {
         ...state,
-        error:action.payload
+        error:action.payload,
+        status:'error',
+        statusCode:401
       }
     }
     case "LOGOUT":{

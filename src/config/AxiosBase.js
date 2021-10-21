@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-const {auth_token} = Cookies.get();
+
 export const AxiosAuth = axios.create({
   baseURL:'https://bootcampapi.techcs.io/api/fe/v1/authorization'
 })
@@ -11,19 +11,13 @@ export const AxiosPublic = axios.create({
 
 export const AxiosPrivate =  axios.create({
   baseURL:'https://bootcampapi.techcs.io/api/fe/v1',
-  headers:{"Authorization" : `Bearer ${auth_token}`}
+  //headers:{"Authorization" : `Bearer ${auth_token}`}
 })
 
-// AxiosPrivate.interceptors.request.use(
-//   config => {
-//     const auth_token = Cookies.get('auth_token');
 
-//     if(auth_token){
-//       config.headers.Authorization = `Bearer ${auth_token}`
-//     }else{
-//       delete AxiosPrivate.defaults.headers.common.Authorization;
-//     }
-//     return config;
-//   },
-//   error => Promise.reject(error)
-// )
+AxiosPrivate.interceptors.request.use(function(config){
+  const {auth_token} = Cookies.get();
+  config.headers.Authorization = `Bearer ${auth_token}`
+  return config;
+})
+

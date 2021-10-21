@@ -14,11 +14,9 @@ const CategoryArea = () => {
   const history = useHistory();
 
   const handleClick = (e,id,title) => {
-    console.log('handle click');
     const params = new URLSearchParams();
     params.append("category",id);
     history.push({search: params.toString()})
-    console.log(id);
     setCurrent(id);
     dispatch(getByCategory(id.toString()))
 

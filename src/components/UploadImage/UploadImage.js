@@ -5,6 +5,8 @@ import image from '../../assets/ProductForm/Group 6911.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostImage } from '../../actions/UploadForm';
 import { Line, Circle } from 'rc-progress';
+import { addNotification} from '../../actions/Notification';
+import { v4 as uuid } from 'uuid';
 const UploadImage = () => {
   const [data, setFile] = useState(null);
   const [progress, setProgress] = useState(1);
@@ -17,18 +19,27 @@ const UploadImage = () => {
     noClick: true,
     noKeyboard: true,
     maxFiles: 1,
+    maxSize:409600,
     onDrop: (acceptedFiles) => {
-      setFile(
-        Object.assign(acceptedFiles[0], {
-          url: URL.createObjectURL(acceptedFiles[0]),
-        })
-      );
+      if(acceptedFiles.length !==0)
+      {
+        setFile(
+          Object.assign(acceptedFiles[0], {
+            url: URL.createObjectURL(acceptedFiles[0]),
+          })
+        );
+      }
+
     },
     onDropAccepted: (files) => {
       let datam = new FormData();
       datam.append('file', files[0]);
       dispatch(PostImage(datam, setProgress, setIsCompleteUpload));
+      dispatch(addNotification({id:uuid(),type:'SUCCESS',message:'Resim yüklendi'}))
     },
+    onDropRejected:() => {
+      dispatch(addNotification({id:uuid(),type:'ERROR',message:'Resim boyutu çok büyük'}))
+    }
   });
 
   const handleClickDelete = () => {

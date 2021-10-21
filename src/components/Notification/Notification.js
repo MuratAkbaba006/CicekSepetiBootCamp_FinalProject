@@ -63,8 +63,8 @@ const Notification = (props) => {
     <NotificationItem onMouseEnter={handleStopTimer} onMouseLeave={handleStartTimer} colors={colors} close={close}>
       <Content type={props.type}>
         {props.type === 'SUCCESS' && <BsFillCheckCircleFill style={{fill:colors.icon}} size={22}/>}
-        {props.type === 'ERROR' && <GoAlert color={colors.icon} size={25}/>}
-        {props.type === 'WARNING' && <GoAlert color={colors.icon} size={25}/>}
+        {props.type === 'ERROR' && <GoAlert style={{fill:colors.icon}} size={25}/>}
+        {props.type === 'WARNING' && <GoAlert style={{fill:colors.icon}} size={25}/>}
       <p>{props.message}</p>
       {/* <button onClick={() => setClose(true)}>Çıkış</button> */}
       </Content>

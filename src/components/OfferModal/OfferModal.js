@@ -4,7 +4,7 @@ import cross from '../../assets/ProductDetail/Group 6618.svg';
 import Cookie from 'js-cookie';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { postOffer } from '../../actions/Account';
+import { postOffer,getGivenOffers } from '../../actions/Account';
 const OfferModal = ({ product,modalRef,setIsGivenOffer,isGivenOfferControl,setOffers,currentOffer }) => {
   const [offer,setOffer] = useState({});
   const [error,setError] = useState({})
@@ -36,6 +36,7 @@ const OfferModal = ({ product,modalRef,setIsGivenOffer,isGivenOfferControl,setOf
     }
     else{
       dispatch(postOffer(product.id,offer.offer));
+      dispatch(getGivenOffers());
       closeModal();
 
     }

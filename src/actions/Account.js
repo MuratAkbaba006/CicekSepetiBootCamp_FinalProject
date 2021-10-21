@@ -4,7 +4,7 @@ export const getGivenOffers = () => (dispatch) => {
   AxiosPrivate.get('/account/given-offers')
     .then((res) => {
       dispatch({ type: 'GET_GIVEN_OFFERS_SUCCESS', payload: res.data });
-      console.log(res);
+      console.log('givenoffers',res);
     })
     .catch((error) =>
       dispatch({ type: 'GET_GIVEN_OFFERS_ERROR', payload: error })
@@ -36,12 +36,14 @@ export const postOffer = (product_id, offer) => (dispatch) => {
 export const rejectOffer = (id) => (dispatch) => {
   AxiosPrivate.post(`/account/reject-offer/${id}`).then((res) => {
     dispatch({type:'POST_REJECT_OFFER_SUCCESS',payload:res})
+    console.log(res);
   })
 }
 
 export const acceptOffer = (id) => (dispatch) => {
   AxiosPrivate.put(`/account/accept-offer/${id}`).then((res) => {
     dispatch({type:'PUT_ACCEPT_OFFER_SUCCESS',payload:res})
+    console.log(res);
   })
 }
 

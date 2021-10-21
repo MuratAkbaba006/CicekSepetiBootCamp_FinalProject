@@ -15,7 +15,9 @@ const Product = ({ product }) => {
 
   return (
     <GridItem onClick={handleClick}>
+      <ProductImageArea>
       <img src={product.imageUrl} alt="" />
+      </ProductImageArea>
       <ProductInfoArea>
         <BrandTitle>{UpperFirstLetter(product.brand.title)}</BrandTitle>
         <Color>
@@ -40,12 +42,8 @@ const GridItem = styled.div`
   border-radius: 8px;
   cursor:pointer;
 
-  img{
-    width: 100%;
-    border-radius:8px;
-    background-color: red;
 
-  }
+
 
 `
 
@@ -83,4 +81,19 @@ font-size: 18px;
 font-weight: bold;
 display: flex;
 justify-content: flex-start;
+`
+
+const ProductImageArea = styled.div`
+max-width: 220px;
+display:flex;
+align-items:center;
+justify-content: center;
+position: relative;
+
+img{
+  width: 100%;
+  object-fit: fill;
+  height: 250px;
+  border-radius: 8px;
+}
 `
