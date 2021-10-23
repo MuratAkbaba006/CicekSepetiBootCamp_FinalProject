@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Banner from '../../components/Banner/Banner'
@@ -7,16 +7,13 @@ import Header from '../../components/Header/Header'
 import ProductList from '../../components/ProductList/ProductList'
 import { useDispatch } from 'react-redux'
 import { addNotification } from '../../actions/Notification'
+import {ClearStatusCode} from '../../actions/Auth';
 import {v4 as uuid} from 'uuid';
-import { useHistory } from 'react-router'
 const Home = () => {
-  const access = useSelector((state) => state.auth.auth_token)
   const statusCode = useSelector((state) => state.auth.statusCode)
   const dispatch = useDispatch();
-  const history = useHistory();
 useEffect(() => {
-  console.log(statusCode);
-  if(statusCode.code === 201)
+  if(statusCode.code === 201 )
   {
     if(statusCode.url === '/signin')
     {
@@ -27,7 +24,9 @@ useEffect(() => {
       dispatch(addNotification({id:uuid(),type:'SUCCESS',message:'Kayıt işlemi başarılı'}))
     }
   }
-
+  return ()=>{
+    dispatch(ClearStatusCode());
+  }
 },[])
   return (
     <HomeContainer>
@@ -39,7 +38,7 @@ useEffect(() => {
   )
 }
 
-export default Home
+export default React.memo(Home)
 
 const HomeContainer = styled.div`
 background-color: #F2F2F2;

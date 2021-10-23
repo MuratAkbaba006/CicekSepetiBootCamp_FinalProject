@@ -4,7 +4,6 @@ import {useSelector} from 'react-redux'
 import Notification from './Notification'
 const NotificationContainer = (props) => {
   const notifications = useSelector((state) => state.notification.notifications);
-  console.log(notifications);
   if(notifications.length===0)
   {
     return false;

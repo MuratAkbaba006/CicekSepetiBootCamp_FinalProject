@@ -73,4 +73,8 @@ const Modal_Box = styled.div`
   z-index: 101;
   padding: 10px;
   border-radius: 8px;
+  @media (max-width: 768px){
+    width:90%;
+    top:35%;
+  }
 `;

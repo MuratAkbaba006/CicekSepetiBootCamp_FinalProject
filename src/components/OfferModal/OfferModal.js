@@ -36,7 +36,9 @@ const OfferModal = ({ product,modalRef,setIsGivenOffer,isGivenOfferControl,setOf
     }
     else{
       dispatch(postOffer(product.id,offer.offer));
-      dispatch(getGivenOffers());
+      setTimeout(() => {
+        dispatch(getGivenOffers());
+      }, 500);
       closeModal();
 
     }

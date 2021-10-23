@@ -49,21 +49,14 @@ const AccountReducer = (state = AccountState,action) =>{
         error:action.payload
       }
     }
-    case 'CANCEL_OFFER_SUCCESS':{
-      const filteredOffer = state.givenOffers.filter((offer) => offer.id !==action.id )
-      console.log(filteredOffer);
+    case 'OFFER_STATUS_IDLE':{
       return{
         ...state,
-        givenOffers:filteredOffer
+        status:'idle'
       }
     }
 
-    case 'POST_OFFER_SUCCESS':{
-      return{
-        ...state,
-        givenOffers:action.payload
-      }
-    }
+
 
     default:
       return state

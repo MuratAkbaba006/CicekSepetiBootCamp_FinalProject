@@ -26,8 +26,7 @@ const CategoryArea = () => {
     {
       dispatch(getAllCategories())
     }
-    console.log(current);
-    console.log('useEffect')
+
     dispatch(getByCategory(current))
 
   },[dispatch,categories.current])

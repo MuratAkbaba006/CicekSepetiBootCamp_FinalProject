@@ -12,7 +12,7 @@ const Header = () => {
       <div>
         <ButtonContainer onClick={() => history.push('/upload_product')}>
         <img src={plus}></img>
-        <p >ÜrünEkle</p>
+        <AddProductTitle>ÜrünEkle</AddProductTitle>
         </ButtonContainer>
         <ButtonContainer onClick={() => history.push('/profile')}>
           <img src={profile} alt="" />
@@ -61,4 +61,10 @@ margin: 0 7px;
 width: 100%;
 cursor:pointer;
 }
+`
+
+const AddProductTitle = styled.p`
+  @media (max-width: 768px){
+    display: none;
+  }
 `

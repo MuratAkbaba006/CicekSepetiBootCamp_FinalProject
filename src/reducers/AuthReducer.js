@@ -44,7 +44,6 @@ const AuthReducer = (state=AuthState,action) => {
       }
     }
     case "LOGIN_SUCCESS" : {
-      console.log(action.status_code);
       return {
         ...state,
         auth_token:action.payload,
@@ -57,13 +56,20 @@ const AuthReducer = (state=AuthState,action) => {
         ...state,
         error:action.payload,
         status:'error',
-        statusCode:401
+        statusCode:{code:action.payload,url:''}
       }
     }
     case "LOGOUT":{
       return {
         ...state,
         auth_token:''
+      }
+    }
+
+    case "CLEAR_STATUS_CODE":{
+      return{
+        ...state,
+        statusCode:[]
       }
     }
 

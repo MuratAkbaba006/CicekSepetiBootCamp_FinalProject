@@ -10,9 +10,8 @@ const Register = () => {
   const access = useSelector((state) => state.auth.auth_token);
   const {auth_token} = Cookie.get();
   const status = useSelector((state) => state.auth.status);
-  console.log(status);
 
-  if(status === 'loading') return <div>Loading...</div>
+  if(status === 'loading') return <div>Loadi...</div>
   if(access || auth_token) return <Redirect to="/"/>
   return (
     <Container>

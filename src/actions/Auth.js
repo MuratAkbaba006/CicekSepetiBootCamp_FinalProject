@@ -22,7 +22,7 @@ export const SignIn = (email, password) => (dispatch) => {
 
 
     })
-    .catch((error) => {console.log(error); dispatch({ type: 'LOGIN_ERROR', payload: error })});
+    .catch((error) => dispatch({ type: 'LOGIN_ERROR', payload: 401 }));
 };
 
 export const SignUp = (email, password) => (dispatch) => {
@@ -42,3 +42,7 @@ export const LogOut = () => (dispatch) => {
   Cookie.remove('auth_token');
   dispatch({ type: 'LOGOUT' });
 };
+
+export const ClearStatusCode = () => (dispatch) => {
+  dispatch({type:'CLEAR_STATUS_CODE'})
+}

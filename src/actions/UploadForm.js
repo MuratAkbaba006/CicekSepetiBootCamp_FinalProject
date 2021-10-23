@@ -16,7 +16,6 @@ export const PostImage =
       .then((res) => {
         dispatch({ type: 'POST_IMAGE_SUCCESS', payload: res.data });
         setProgress(100);
-        console.log(res);
         setIsCompleteUpload(true);
         setTimeout(() => {
           setProgress(0);
@@ -88,27 +87,30 @@ export const AddProduct =
       SingleColorRequest(colorId),
       SingleStatusRequest(statusId),
       SingleCategoryRequest(categoryId),
-    ]).then((res) => {
-    const data =  AxiosPrivate.post(
-        '/product/create',
-        {
-          price,
-          imageUrl,
-          title,
-          status:res[2].data,
-          color:res[1].data,
-          brand:res[0].data,
-          category:res[3].data,
-          description,
-          isOfferable,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-        }
-        }
-      )
-        return data
-    }).then((response) => {console.log(response)})
+    ])
+      .then((res) => {
+        const data = AxiosPrivate.post(
+          '/product/create',
+          {
+            price,
+            imageUrl,
+            title,
+            status: res[2].data,
+            color: res[1].data,
+            brand: res[0].data,
+            category: res[3].data,
+            description,
+            isOfferable,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        return data;
+      })
+      .then((response) => {
 
+      });
   };

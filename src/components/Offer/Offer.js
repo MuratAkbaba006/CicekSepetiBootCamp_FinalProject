@@ -1,6 +1,6 @@
-import React,{useRef} from 'react';
+import React,{useRef,useEffect} from 'react';
 import styled from 'styled-components';
-import { rejectOffer, acceptOffer,getGivenOffers,getReceivedOffers } from '../../actions/Account';
+import { rejectOffer, acceptOffer,getGivenOffers,getReceivedOffers,offerStatusIdle } from '../../actions/Account';
 import { buyProduct } from '../../actions/Product';
 import { useDispatch } from 'react-redux';
 import Modal from '../Modal/Modal';
@@ -10,7 +10,14 @@ const Offer = ({ offer, name }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const modalRef= useRef();
-  console.log(offer);
+  console.log('offer',offer);
+useEffect(() => {
+return () => {
+  dispatch(offerStatusIdle())
+}
+},[])
+
+
   const handleRejectOffer = (e) => {
     e.stopPropagation();
     dispatch(rejectOffer(offer.id));
@@ -53,24 +60,24 @@ const Offer = ({ offer, name }) => {
     history.push(`/detail/${id}`)
   }
 
-  const ReceivedOfferStatusControl = (status,isSold) => {
+  const GaveOfferStatusControl = (status,isSold) => {
     if (status === 'accepted' && isSold === false) {
       return (
-        <ReceivedOffersAcceptArea>
+        <GaveOffersAcceptArea>
           <BuyButton onClick={handleBuyProduct}>
             Satın Al
           </BuyButton>
-            <StatusLabel status={status}>{status}</StatusLabel>
-        </ReceivedOffersAcceptArea>
+            <StatusLabel status={status}>Onaylandı</StatusLabel>
+        </GaveOffersAcceptArea>
       );
     } else {
       if(offer.isSold === 'sold')
       {
-        return <div>Satın Alındı</div>
+        return <div style={{color:'#46AF32'}}>Satın Alındı</div>
       }
       else{
 
-        return <StatusLabel status={status}>{status}</StatusLabel>;
+        return <StatusLabel status={status} >{status === 'rejected' ? 'Reddedildi':'Bekleniyor'}</StatusLabel>;
       }
     }
   };
@@ -96,10 +103,10 @@ const Offer = ({ offer, name }) => {
       <ButtonArea>
         {name === 'Teklif Aldıklarım'
           ? OfferStatusControl(offer.status)
-          : ReceivedOfferStatusControl(offer.status,offer.product.isSold)}
+          : GaveOfferStatusControl(offer.status,offer.product.isSold)}
       </ButtonArea>
       <Modal ref={modalRef}>
-      <BuyModal modalRef={modalRef} product={offer.product}/>
+      <BuyModal modalRef={modalRef} offer={offer} GaveOfferStatusControl={GaveOfferStatusControl}/>
       </Modal>
     </OfferContainer>
   );
@@ -125,6 +132,7 @@ const ContentArea = styled.div`
 `;
 const ButtonArea = styled.div`
   margin-right: 15px;
+
 `;
 const Button = styled.button`
   margin-left: 5px;
@@ -171,6 +179,7 @@ const DescriptionArea = styled.div`
       margin-right: 2px;
     }
   }
+
 `;
 
 const StatusLabel = styled.div`
@@ -195,7 +204,7 @@ const ImageArea = styled.div`
   }
 `;
 
-const ReceivedOffersAcceptArea = styled.div`
+const GaveOffersAcceptArea = styled.div`
 display:flex;
 `
 

@@ -13,7 +13,6 @@ const UploadImage = () => {
   const [isCompleteUpload, setIsCompleteUpload] = useState(false);
   const dispatch = useDispatch();
   const url = useSelector((state) => state.form.imageUrl);
-  console.log(progress);
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: 'image/*',
     noClick: true,
@@ -107,9 +106,11 @@ const UploadImageContainer = styled.div`
 const UploadedImage = styled.div`
   position: relative;
   margin-left: 8px;
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
   img {
     width: 40%;
-    justify-content: start;
   }
   span {
     position: absolute;

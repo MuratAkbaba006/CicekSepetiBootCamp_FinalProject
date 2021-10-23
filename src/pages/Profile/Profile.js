@@ -5,7 +5,7 @@ import ProfileIcon from '../../assets/Profile/Group 6876.svg';
 import Cookie from 'js-cookie';
 import jwt_decode from 'jwt-decode';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGivenOffers,getReceivedOffers } from '../../actions/Account';
+import { getGivenOffers, getReceivedOffers } from '../../actions/Account';
 import {
   CategoryAreaContainer,
   Category,
@@ -19,7 +19,7 @@ const Profile = () => {
   const givenOffers = useSelector((state) => state.account.givenOffers);
 
   const receivedOffers = useSelector((state) => state.account.receivedOffers);
-  console.log(receivedOffers);
+
   const status = useSelector((state) => state.account.status);
   const titles = ['Teklif Aldıklarım', 'Teklif Verdiklerim'];
   useEffect(() => {
@@ -30,13 +30,13 @@ const Profile = () => {
 
   const handleTitleChange = (title) => {
     setCurrentTitle(title);
-    if(title === 'Teklif Verdiklerim' && givenOffers.length===0)
-    {
-      dispatch(getGivenOffers())
+    if (title === 'Teklif Verdiklerim') {
+      dispatch(getGivenOffers());
     }
+  };
 
-
-  }
+  console.log(status);
+  console.log(receivedOffers);
   return (
     <ProfileContainer>
       <Header />
@@ -58,9 +58,12 @@ const Profile = () => {
           ))}
         </ContentTitleArea>
         <OffersArea>
-          {
-            (currentTitle === 'Teklif Aldıklarım' ? receivedOffers : givenOffers).map((offer) => <Offer key={offer.id} name={currentTitle} offer={offer}/>)
-          }
+          {(currentTitle === 'Teklif Aldıklarım'
+            ? receivedOffers
+            : givenOffers
+          ).map((offer) => (
+            <Offer key={offer.id} name={currentTitle} offer={offer} />
+          ))}
         </OffersArea>
       </Content>
     </ProfileContainer>
@@ -118,9 +121,8 @@ const ContentTitle = styled.div`
 `;
 
 const OffersArea = styled.div`
-margin-top: 10px;
-display: flex;
-flex-direction: column;
-align-items: center;
-
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

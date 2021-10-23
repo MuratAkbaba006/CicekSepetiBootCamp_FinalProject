@@ -32,13 +32,17 @@ const AuthForm = ({ title }) => {
     if(statusCode.code === 401 && statusCode.code !==null)
     {
       dispatch(addNotification({id:uuid(),type:'ERROR',message:'Mail/Şifre Hatalı'}))
-
     }
 
 
   },[statusCode])
 
-  //console.log(statusCode);
+  useEffect(()=>{
+    mailRef.current.focus()
+
+  },[])
+
+
   return (
     <AuthFormContainer>
       <FormArea>
@@ -52,7 +56,7 @@ const AuthForm = ({ title }) => {
             password: '',
           }}
           validationSchema={Yup.object({
-            email: Yup.string().email().required('Mail Alanı boş bırakılamaz'),
+            email: Yup.string().email('Lütfen geçerli bir mail adresi girin').required('Mail Alanı boş bırakılamaz'),
             password: Yup.string().min(8,'Şifreniz en az 8 karakterden oluşmalıdır').max(20,'Şifreniz en fazla 20 karakterden oluşabilir').required('Şifre Alanı boş bırakılamaz'),
           })}
           onSubmit={_handleSubmit}
@@ -62,6 +66,7 @@ const AuthForm = ({ title }) => {
             errors,
             handleChange,
             handleSubmit,
+            handleBlur,
             touched,
             dirty,
             isSubmitting,
@@ -75,11 +80,13 @@ const AuthForm = ({ title }) => {
                   ref={mailRef}
                   value={values.email}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
               </InputArea>
-              {(errors.email || touched.email) && <Error>{errors.email}</Error>}
+              {(errors.email && touched.email) && <Error>{errors.email}</Error>}
               <InputArea>
                 <label htmlFor="password">Password</label>
+                <div style={{width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
@@ -87,15 +94,16 @@ const AuthForm = ({ title }) => {
                   value={values.password}
                   autoComplete="on"
                   onChange={handleChange}
-
+                  onBlur={handleBlur}
                 />
                 {!showPassword && <AiFillEyeInvisible onClick={()=>setShowPassword(!showPassword)} style={{position:'absolute',right:'14%',cursor:'pointer'}} size={20}/>}
                 {showPassword && <AiFillEye onClick={()=>setShowPassword(!showPassword)} style={{position:'absolute',right:'14%',cursor:'pointer'}} size={20}/>}
-              {(errors.password || touched.password) && <Error>{errors.password}</Error>}
-                <a htmlFor="">Şifremi Unuttum</a>
+                </div>
+              {(errors.password && touched.password) && <Error>{errors.password}</Error>}
+              {title === 'Giriş Yap' &&  <a htmlFor="">Şifremi Unuttum</a>}
               </InputArea>
 
-              <Button type="submit" disabled={!dirty || isSubmitting || errors.password || errors.email }>
+              <Button type="submit" title={title} disabled={!dirty || isSubmitting || errors.password || errors.email }>
                 {title}
               </Button>
             </form>
@@ -108,9 +116,9 @@ const AuthForm = ({ title }) => {
             <span>Zaten üye misin?</span>
           )}
           {title === 'Giriş Yap' ? (
-            <span onClick={() => history.push('/register')}>Üye Ol</span>
+            <RouteAuth onClick={() => history.push('/register')}>Üye Ol</RouteAuth>
           ) : (
-            <span onClick={() => history.push('/login')}>Giriş Yap</span>
+            <RouteAuth onClick={() => history.push('/login')}>Giriş Yap</RouteAuth>
           )}
         </footer>
       </FormArea>
@@ -129,6 +137,9 @@ const AuthFormContainer = styled.div`
   box-shadow: 0px 3px 12px #1e36480a;
   border-radius: 8px;
   margin-top: 25px;
+  @media (max-width: 768px){
+    width: 90%;
+  }
 `;
 
 const FormArea = styled.div`
@@ -145,6 +156,9 @@ const FormArea = styled.div`
     p {
       font-size: 15px;
       text-align: center;
+      @media (max-width: 768px){
+        margin: 0;
+      }
     }
   }
   form {
@@ -156,6 +170,8 @@ const FormArea = styled.div`
   }
   footer {
     margin-top: 8px;
+    color:#525252;
+    font-size: 15px;
   }
 `;
 
@@ -169,10 +185,19 @@ const InputArea = styled.div`
   position: relative;
   input {
     width: 80%;
-    padding: 5px 0;
+    padding: 8px 5px;
     border-radius: 8px;
     font-size: 16px;
     color: #99a0a7;
+    background-color: #F4F4F4;
+    border: none;
+    outline: none;
+    :focus{
+    background-color: #F0F8FF;
+    outline: auto;
+    outline-color: #4B9CE2;
+  }
+
   }
   label {
     display: flex;
@@ -197,15 +222,26 @@ const Button = styled.button`
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
-  margin-top:8px;
+  border:none;
+  outline:none;
+  margin-top:${props=>props.title === 'Giriş Yap' ? '8px':'15px'};
   :disabled{
     cursor: auto;
 
   }
+
 `;
 
 const Error = styled.div`
 width: 80%;
 text-align: start;
 color:red;
+`
+
+const RouteAuth = styled.span`
+color:#4B9CE2;
+font-size:15px;
+font-weight: bold;
+margin-left: 3px;
+cursor:pointer;
 `

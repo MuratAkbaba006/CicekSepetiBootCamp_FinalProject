@@ -7,10 +7,15 @@ import styled from 'styled-components';
 import { UpperFirstLetter } from '../../utils/utils';
 import Modal from '../../components/Modal/Modal';
 import OfferModal from '../../components/OfferModal/OfferModal';
-import { getGivenOffers,cancelOffer } from '../../actions/Account';
+import { getGivenOffers,cancelOffer,offerStatusIdle } from '../../actions/Account';
 import BuyModal from '../../components/BuyModal/BuyModal';
+import Cookies from 'js-cookie';
+import { addNotification } from '../../actions/Notification';
+import {v4 as uuid} from 'uuid'
+import Loading from '../../components/Loading/Loading';
 const ProductDetail = () => {
   const { product_id } = useParams();
+  const {auth_token} = Cookies.get();
   const modalRef = useRef();
   const buyModalRef = useRef();
   const [isGivenOffer,setIsGivenOffer] = useState(false);
@@ -21,19 +26,44 @@ const ProductDetail = () => {
   let counter = 0;
 
   const openModal = () => {
-    modalRef.current.openModal();
+    if(auth_token === undefined)
+    {
+      dispatch((addNotification({id:uuid(),type:'WARNING',message:'Giriş yapmalısınız'})))
+    }
+    else{
+      modalRef.current.openModal();
+    }
   };
   useEffect(  ()  => {
      //isGivenOfferControl();
      dispatch(getSingleProduct(product_id));
-     dispatch(getGivenOffers())
+     if(auth_token !== undefined)
+     {
+      dispatch(getGivenOffers())
+     }
+     return () => {
+      dispatch(offerStatusIdle());
+     }
   }, []);
 
   useEffect(() => {
-    isGivenOfferControl();
+    if(auth_token !== undefined)
+    {
+      isGivenOfferControl();
+    }
   },[givenOffers])
+
+
+
   const openBuyModal = () => {
-    buyModalRef.current.openModal();
+    if(auth_token === undefined)
+    {
+      dispatch((addNotification({id:uuid(),type:'WARNING',message:'Giriş yapmalısınız'})))
+    }
+    else{
+
+      buyModalRef.current.openModal();
+    }
   }
 
 
@@ -45,17 +75,15 @@ const ProductDetail = () => {
     }
     else{
       givenOffers.map((offer) => {
-        console.log('offer',offer)
-
         if (offer.product.id === product_id) {
           setIsGivenOffer(true);
-          console.log('offer',offer);
-          setOffer({price:offer.offeredPrice,id:offer.id})
+
+          setOffer(offer)
         }
         else{
           counter ++;
           if(counter === givenOffers.length)
-          { console.log('counter içi');
+          {
             setIsGivenOffer(false);
             setOffer(null);
           }
@@ -70,18 +98,13 @@ const ProductDetail = () => {
     setTimeout(() => {
      dispatch(getSingleProduct(product_id));
      dispatch(getGivenOffers())
+     isGivenOfferControl();
+    }, 1000);
 
-    }, 500);
-    setTimeout(() => {
-      isGivenOfferControl();
-    },1000)
   }
-  //console.log(givenOffers);
-  console.log(product);
-  console.log(isGivenOffer);
-  //console.log(offer);
+
   if (product === null  ) {
-    return <div>Loafinf...</div>;
+    return <Loading/>;
   }
   return (
     <ProductDetailContainer>
@@ -109,7 +132,7 @@ const ProductDetail = () => {
           <Price>{product.price} TL</Price>
           {product.isSold === true && <BuyInformation>Bu Ürün Satışta Değil</BuyInformation>}
           {product.isSold === false && isGivenOffer === true && (
-            <OfferInformation><label htmlFor="offer">Verilen Teklif: </label>{offer.price} TL</OfferInformation>
+            <OfferInformation><label htmlFor="offer">Verilen Teklif: </label>{offer.offeredPrice} TL</OfferInformation>
           )}
           {(product.isSold === false &&
             isGivenOffer !==
@@ -140,7 +163,7 @@ const ProductDetail = () => {
         <OfferModal product={product} modalRef={modalRef} setIsGivenOffer={setIsGivenOffer} isGivenOfferControl={isGivenOfferControl} setOffers={setOffer} currentOffer={offer}/>
       </Modal>
       <Modal ref={buyModalRef}>
-        <BuyModal modalRef={buyModalRef} product={product} />
+        <BuyModal modalRef={buyModalRef} offer={offer} product={product} />
       </Modal>
     </ProductDetailContainer>
   );
@@ -154,6 +177,10 @@ const ProductDetailContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 768px){
+    height: 100%;
+  }
+
 `;
 const ImageArea = styled.div`
   width: 50%;
@@ -162,6 +189,12 @@ const ImageArea = styled.div`
   img {
     border-radius: 8px;
     width: 75%;
+    @media (max-width: 768px){
+    width:100%;
+  }
+  }
+  @media (max-width: 768px){
+    width:100%;
   }
 `;
 const ProductArea = styled.div`
@@ -173,6 +206,12 @@ const ProductArea = styled.div`
   box-sizing: border-box;
   padding: 10px;
   border-radius: 8px;
+
+  @media (max-width: 768px){
+    display: block;
+    height:100%;
+    width: 90%;
+  }
 `;
 
 const Content = styled.div`
@@ -181,12 +220,21 @@ const Content = styled.div`
   flex-direction: column;
   padding: 10px;
   box-sizing: border-box;
+  @media (max-width:768px){
+    width:100%;
+  }
 `;
 
 const Title = styled.div`
   color: #555555;
   font-size: 34px;
   margin-bottom: 18px;
+
+  @media (max-width: 768px){
+    display:flex;
+    width:100%;
+    font-size:18px;
+  }
 `;
 const Info = styled.div`
 

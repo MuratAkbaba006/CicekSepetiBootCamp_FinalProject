@@ -38,7 +38,7 @@ const GridItem = styled.div`
   background-color: #ffffff;
   padding: 10px;
   font-size: 30px;
-  text-align: center;
+  //text-align: center;
   border-radius: 8px;
   cursor:pointer;
 
@@ -51,6 +51,10 @@ const ProductInfoArea = styled.div`
 display: flex;
 align-items: center;
 justify-content: space-between;
+@media (max-width: 768px){
+  display:block;
+  justify-content: center;
+}
 `
 
 const BrandTitle = styled.div`
@@ -89,7 +93,6 @@ display:flex;
 align-items:center;
 justify-content: center;
 position: relative;
-
 img{
   width: 100%;
   object-fit: fill;
