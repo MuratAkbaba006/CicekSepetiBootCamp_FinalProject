@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import {
+  FormContainer,
+  Content,
+  ProductDetail,
+  ProductImageArea,
+  Name,
+  Description,
+  SelectAreaOne,
+  Category,
+  Brand,
+  SelectAreaTwo,
+  Color,
+  Status,
+  Offer,
+  Error,
+} from './ScUploadProductForm';
 import Switch from 'react-switch';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import UploadImage from '../UploadImage/UploadImage';
-import { getAllDropdownItem,AddProduct } from '../../actions/UploadForm';
+import { getAllDropdownItem, AddProduct } from '../../actions/UploadForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { UpperFirstLetter } from '../../utils/utils';
 import { addNotification } from '../../actions/Notification';
@@ -38,23 +53,33 @@ const UploadProductForm = () => {
   }, []);
 
   const handleFormSubmit = (values) => {
-  const {price,brand,category,color,description,productname,status} = values;
-  dispatch(AddProduct({
-    price:parseInt(price),
-    imageUrl:imageurl.url,
-    title:productname,
-    statusId:status,
-    colorId:color,
-    brandId:brand,
-    categoryId:category,
-    description,
-    isOfferable:offerOpt,}))
+    const { price, brand, category, color, description, productname, status } =
+      values;
+    dispatch(
+      AddProduct({
+        price: parseInt(price),
+        imageUrl: imageurl.url,
+        title: productname,
+        statusId: status,
+        colorId: color,
+        brandId: brand,
+        categoryId: category,
+        description,
+        isOfferable: offerOpt,
+      })
+    );
 
-    dispatch(addNotification({id:uuid(),type:'SUCCESS',message:'Ürün Ekleme işlemi Başarılı'}))
+    dispatch(
+      addNotification({
+        id: uuid(),
+        type: 'SUCCESS',
+        message: 'Ürün Ekleme işlemi Başarılı',
+      })
+    );
     setTimeout(() => {
       history.push('/');
     }, 3000);
-  }
+  };
   return (
     <FormContainer>
       <Formik
@@ -68,13 +93,19 @@ const UploadProductForm = () => {
           price: 0,
         }}
         validationSchema={Yup.object({
-          productname: Yup.string().max(100,'Ürün ismi 100 karakterden uzun olamaz').required('Bir urün ismi girmelisiniz'),
-          description: Yup.string().max(500,'Ürün açıklaması 500 karakterden uzun olamaz').required('Açıklama girmelisiniz'),
+          productname: Yup.string()
+            .max(100, 'Ürün ismi 100 karakterden uzun olamaz')
+            .required('Bir urün ismi girmelisiniz'),
+          description: Yup.string()
+            .max(500, 'Ürün açıklaması 500 karakterden uzun olamaz')
+            .required('Açıklama girmelisiniz'),
           category: Yup.string().required('Kategori Seçimi yapmalısınız'),
           brand: Yup.string().required('Marka Seçimi yapmalısınız'),
           color: Yup.string().required('Renk Seçimi yapmalısınız'),
           status: Yup.string().required('Durum Seçimi yapmalısınız'),
-          price: Yup.number().required('Fiyat girmelisiniz').typeError('Fiyat değeri sayı olmalıdır'),
+          price: Yup.number()
+            .required('Fiyat girmelisiniz')
+            .typeError('Fiyat değeri sayı olmalıdır'),
         })}
         onSubmit={handleFormSubmit}
       >
@@ -101,7 +132,9 @@ const UploadProductForm = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {(errors.productname && touched.productname) && <Error>{errors.productname}</Error>}
+                  {errors.productname && touched.productname && (
+                    <Error>{errors.productname}</Error>
+                  )}
                 </Name>
                 <Description>
                   <label htmlFor="description">Ürün Açıklaması</label>
@@ -112,7 +145,9 @@ const UploadProductForm = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {(errors.description && touched.description) && <Error>{errors.description}</Error>}
+                  {errors.description && touched.description && (
+                    <Error>{errors.description}</Error>
+                  )}
                 </Description>
                 <SelectAreaOne>
                   <Category>
@@ -125,12 +160,17 @@ const UploadProductForm = () => {
                       onBlur={handleBlur}
                     >
                       {categories.map((category) => (
-                        <option key={category.id} value={category.id === 1 ? '' :category.id}>
+                        <option
+                          key={category.id}
+                          value={category.id === 1 ? '' : category.id}
+                        >
                           {UpperFirstLetter(category.title)}
                         </option>
                       ))}
                     </select>
-                  {(errors.category && touched.category) && <Error>{errors.category}</Error>}
+                    {errors.category && touched.category && (
+                      <Error>{errors.category}</Error>
+                    )}
                   </Category>
                   <Brand>
                     <label htmlFor="brand">Marka</label>
@@ -140,15 +180,19 @@ const UploadProductForm = () => {
                       value={values.brand}
                       onChange={handleChange}
                       onBlur={handleBlur}
-
                     >
                       {brands.map((brand) => (
-                        <option key={brand.id} value={brand.id === 1 ? '' :brand.id}>
+                        <option
+                          key={brand.id}
+                          value={brand.id === 1 ? '' : brand.id}
+                        >
                           {UpperFirstLetter(brand.title)}
                         </option>
                       ))}
                     </select>
-                  {(errors.brand && touched.brand) && <Error>{errors.brand}</Error>}
+                    {errors.brand && touched.brand && (
+                      <Error>{errors.brand}</Error>
+                    )}
                   </Brand>
                 </SelectAreaOne>
                 <SelectAreaTwo>
@@ -162,12 +206,17 @@ const UploadProductForm = () => {
                       onBlur={handleBlur}
                     >
                       {colors.map((color) => (
-                        <option key={color.id} value={color.id === 1 ? '' :color.id}>
+                        <option
+                          key={color.id}
+                          value={color.id === 1 ? '' : color.id}
+                        >
                           {UpperFirstLetter(color.title)}
                         </option>
                       ))}
                     </select>
-                  {(errors.color && touched.color) && <Error>{errors.color}</Error>}
+                    {errors.color && touched.color && (
+                      <Error>{errors.color}</Error>
+                    )}
                   </Color>
                   <Status>
                     <label htmlFor="status">Kullanım Durumu</label>
@@ -179,12 +228,17 @@ const UploadProductForm = () => {
                       onBlur={handleBlur}
                     >
                       {productStatus.map((status) => (
-                        <option key={status.id} value={status.id === 1 ? '':status.id}>
+                        <option
+                          key={status.id}
+                          value={status.id === 1 ? '' : status.id}
+                        >
                           {UpperFirstLetter(status.title)}
                         </option>
                       ))}
                     </select>
-                  {(errors.status && touched.status) && <Error>{errors.status}</Error>}
+                    {errors.status && touched.status && (
+                      <Error>{errors.status}</Error>
+                    )}
                   </Status>
                 </SelectAreaTwo>
                 <Offer>
@@ -196,7 +250,9 @@ const UploadProductForm = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {(errors.price && touched.price) && <Error>{errors.price}</Error>}
+                  {errors.price && touched.price && (
+                    <Error>{errors.price}</Error>
+                  )}
                   <div>
                     <label htmlFor="offerOpt">Teklif Opsiyonu</label>
                     <Switch
@@ -228,7 +284,20 @@ const UploadProductForm = () => {
                 justifyContent: 'flex-end',
               }}
             >
-              <button type="submit" disabled={!dirty || isSubmitting || errors.productname || errors.description || errors.category || errors.brand || errors.color || errors.status || errors.price}>
+              <button
+                type="submit"
+                disabled={
+                  !dirty ||
+                  isSubmitting ||
+                  errors.productname ||
+                  errors.description ||
+                  errors.category ||
+                  errors.brand ||
+                  errors.color ||
+                  errors.status ||
+                  errors.price
+                }
+              >
                 Kaydet
               </button>
             </div>
@@ -240,146 +309,3 @@ const UploadProductForm = () => {
 };
 
 export default UploadProductForm;
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 86%;
-  height: 50%;
-  background-color: #ffffff;
-  margin-top: 15px;
-  border-radius: 8px;
-  button {
-    display: flex;
-    background-color: #4B9CE2;
-    width: 22%;
-    justify-content: center;
-    align-items: center;
-    color:#FFFFFF;
-    margin:10px;
-    border:none;
-    border-radius: 8px;
-    padding:5px;
-    font-size: 18px;
-    font-weight:bold;
-    cursor:pointer;
-    :disabled{
-      cursor:auto
-    }
-  }
-`;
-
-const Content = styled.div`
-  display: flex;
-`;
-const ProductDetail = styled.div`
-  display: flex;
-  width: 55%;
-  border-right: 1px solid #F2F2F2;
-  flex-direction: column;
-  align-items: center;
-  margin-top:5px;
-  h4{
-    color:#525252;
-    font-size:25px;
-    font-weight:bold;
-    width:90%;
-    margin:15px 0px 18px 0px;
-  }
-`;
-
-const ProductImageArea = styled.div`
-  display: flex;
-  width: 45%;
-  flex-direction: column;
-  align-items: center;
-  h4{
-    color:#525252;
-    font-size:25px;
-    font-weight:bold;
-    width:90%;
-    margin:15px 0px 18px 0px;
-  }
-`;
-
-const Name = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 10px;
-  width: 100%;
-
-  label {
-    display: flex;
-    align-items: flex-start;
-    width: 90%;
-    font-size: 15px;
-    color: #525252;
-  }
-  input {
-    width: 90%;
-    background-color: #f4f4f4;
-    font-size: 16px;
-    color: #99a0a7;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 12px;
-    outline: none;
-    box-sizing: border-box;
-    :focus {
-      background-color: #f0f8ff;
-    }
-  }
-`;
-const Description = styled(Name)``;
-const SelectAreaOne = styled.div`
-  display: flex;
-  width: 90%;
-  justify-content: space-between;
-`;
-const Category = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 45%;
-  margin-bottom: 5px;
-  label {
-    font-size: 15px;
-    color: #525252;
-  }
-  select {
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    color: #99a0a7;
-    font-size: 16px;
-    outline: none;
-    padding: 5px;
-    border: none;
-  }
-`;
-const Brand = styled(Category)``;
-const SelectAreaTwo = styled(SelectAreaOne)``;
-const Color = styled(Category)``;
-const Status = styled(Category)``;
-const Offer = styled(Name)`
-  align-items: flex-start;
-  margin-left: 10%;
-  input {
-    width: 30%;
-    margin-bottom: 10px;
-  }
-  div {
-    display: flex;
-    width: 30%;
-    justify-content: space-around;
-    align-items: center;
-    label {
-      margin: 0px;
-      padding: 0px;
-    }
-  }
-`;
-
-const Error = styled.div`
-text-align: start;
-color:red;
-`

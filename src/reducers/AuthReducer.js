@@ -1,81 +1,86 @@
 const AuthState = {
-  auth_token:{},
-  status:'idle',
-  error:null,
-  statusCode:[]
-}
+  auth_token: null,
+  status: 'idle',
+  error: null,
+  statusCode: [],
+};
 
-const AuthReducer = (state=AuthState,action) => {
-  switch(action.type)
-  {
-
-    case 'LOGIN_CONTROL':{
+const AuthReducer = (state = AuthState, action) => {
+  switch (action.type) {
+    case 'LOGIN_CONTROL': {
       return {
         ...state,
-        status:'succeded',
-        auth_token:action.payload
-      }
+        status: 'succeded',
+        auth_token: action.payload,
+      };
     }
-    case "REGISTER_START":{
+    case 'REGISTER_START': {
       return {
         ...state,
-        status:'loading'
-      }
+        status: 'loading',
+      };
     }
-    case "REGISTER_SUCCESS":{
+    case 'REGISTER_SUCCESS': {
       return {
         ...state,
-        auth_token:action.payload,
-        status:'succeded',
-        statusCode:{code:action.response.status,url:action.response.config.url}
-      }
+        auth_token: action.payload,
+        status: 'succeded',
+        statusCode: {
+          code: action.response.status,
+          url: action.response.config.url,
+        },
+      };
     }
-    case "REGISTER_ERROR":{
+    case 'REGISTER_ERROR': {
       return {
         ...state,
-        status:'error',
-        error:action.payload
-      }
-    }
-    case "LOGIN_START": {
-      return {
-        ...state,
-        status:'loading',
-      }
-    }
-    case "LOGIN_SUCCESS" : {
-      return {
-        ...state,
-        auth_token:action.payload,
-        status:'login_success',
-        statusCode:{code:action.response.status,url:action.response.config.url}
-      }
-    }
-    case "LOGIN_ERROR":{
-      return {
-        ...state,
-        error:action.payload,
-        status:'error',
+        status: 'error',
+        error: action.payload,
         statusCode:{code:action.payload,url:''}
-      }
+      };
     }
-    case "LOGOUT":{
+    case 'LOGIN_START': {
       return {
         ...state,
-        auth_token:''
-      }
+        status: 'loading',
+      };
+    }
+    case 'LOGIN_SUCCESS': {
+      return {
+        ...state,
+        auth_token: action.payload,
+        status: 'login_success',
+        statusCode: {
+          code: action.response.status,
+          url: action.response.config.url,
+        },
+      };
+    }
+    case 'LOGIN_ERROR': {
+      return {
+        ...state,
+        error: action.payload,
+        status: 'error',
+        statusCode: { code: action.payload, url: '' },
+      };
+    }
+    case 'LOGOUT': {
+      return {
+        ...state,
+        auth_token: '',
+      };
     }
 
-    case "CLEAR_STATUS_CODE":{
-      return{
+    case 'CLEAR_STATUS_CODE': {
+      return {
         ...state,
-        statusCode:[]
-      }
+        statusCode: [],
+      };
     }
 
     default:
       return state;
   }
-}
+};
 
-export default AuthReducer
+export default AuthReducer;

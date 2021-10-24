@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { getAllCategories } from '../../actions/Category'
-import { getByCategory,getAllProducts } from '../../actions/Product'
+import { getByCategory } from '../../actions/Product'
 import {UpperFirstLetter} from '../../utils/utils'
 import { CategoryAreaContainer,Category } from './ScCategoryArea'
-import { useHistory,useParams,useLocation } from 'react-router'
+import { useHistory,useLocation } from 'react-router'
 const CategoryArea = () => {
   const urlParams = new URLSearchParams(useLocation().search);
   const categories = useSelector((state) => state.category.categories)
-  const allcategories = [{id:1,title:'Hepsi'},...categories,{id:2,title:'Diğer'}]
+  const allcategories = [{id:'1',title:'Hepsi'},...categories,{id:'2',title:'Diğer'}]
   const [current,setCurrent] = useState( urlParams.get('category')===null ? '1':urlParams.get('category'))
   const dispatch = useDispatch();
   const history = useHistory();

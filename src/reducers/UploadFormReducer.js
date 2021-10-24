@@ -1,45 +1,44 @@
 const UploadFormState = {
-  imageUrl:'',
-  error:null,
-  colors:[],
-  brands:[],
-  productStatus:[],
-  categories:[]
-}
+  imageUrl: '',
+  error: null,
+  colors: [],
+  brands: [],
+  productStatus: [],
+  categories: [],
+};
 
-const UploadFormReducer = (state=UploadFormState,action) => {
-  switch(action.type)
-  {
-    case 'POST_IMAGE_SUCCESS':{
-      return{
+const UploadFormReducer = (state = UploadFormState, action) => {
+  switch (action.type) {
+    case 'POST_IMAGE_SUCCESS': {
+      return {
         ...state,
-        imageUrl:action.payload
-      }
+        imageUrl: action.payload,
+      };
     }
-    case 'POST_IMAGE_ERROR':{
-      return{
+    case 'POST_IMAGE_ERROR': {
+      return {
         ...state,
-        error:action.payload
-      }
+        error: action.payload,
+      };
     }
-    case 'GET_ALL_DROPDOWNITEM_SUCCESS':{
-      return{
+    case 'GET_ALL_DROPDOWNITEM_SUCCESS': {
+      return {
         ...state,
-        brands:action.payload[0].data,
-        colors:action.payload[1].data,
-        productStatus:action.payload[2].data,
-        categories:action.payload[3].data
-      }
+        brands: action.payload[0].data,
+        colors: action.payload[1].data,
+        productStatus: action.payload[2].data,
+        categories: action.payload[3].data,
+      };
     }
-    case 'GET_ALL_DROPDOWNITEM_ERROR':{
-      return{
+    case 'GET_ALL_DROPDOWNITEM_ERROR': {
+      return {
         ...state,
-        error:action.payload
-      }
+        error: action.payload,
+      };
     }
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default UploadFormReducer
+export default UploadFormReducer;

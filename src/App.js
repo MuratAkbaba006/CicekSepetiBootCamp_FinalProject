@@ -1,17 +1,19 @@
-import React from 'react';
+import React,{Suspense,lazy} from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Login from './pages/Login/Login';
-import Home from './pages/Home/Home';
-import Register from './pages/Register/Register';
 import ProtectedRoute from './routes/ProtectedRoute';
-import ProductDetail from './pages/ProductDetail/ProductDetail';
-import Profile from './pages/Profile/Profile';
-import UploadProduct from './pages/UploadProduct/UploadProduct';
-import NotificationContainer from './components/Notification/NotificationContainer';
+import Loading from './components/Loading/Loading';
+const Home = lazy(() => import('./pages/Home/Home'))
+const Login =lazy(() => import('./pages/Login/Login'))
+const Register = lazy(() => import('./pages/Register/Register'))
+const ProductDetail = lazy(() => import('./pages/ProductDetail/ProductDetail'))
+const Profile = lazy(() => import('./pages/Profile/Profile'))
+const UploadProduct = lazy(() => import('./pages/UploadProduct/UploadProduct'))
+const NotificationContainer = lazy(() => import('./components/Notification/NotificationContainer'))
 const App = () => {
   return (
     <Router>
+      <Suspense fallback={<Loading/>}>
       <div className="App">
         <Switch>
           <Route exact path="/" component={Home} />
@@ -27,6 +29,7 @@ const App = () => {
         </Switch>
         <NotificationContainer/>
       </div>
+      </Suspense>
     </Router>
   );
 };

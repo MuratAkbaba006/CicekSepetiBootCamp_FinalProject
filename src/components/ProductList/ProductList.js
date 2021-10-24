@@ -1,13 +1,9 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllProducts, getByCategory } from '../../actions/Product';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Product from '../Product/Product';
-import { useLocation } from 'react-router';
 import Loading from '../Loading/Loading';
 const ProductList = () => {
-  const urlParams = new URLSearchParams(useLocation().search);
-  const dispatch = useDispatch();
   const status = useSelector((state) => state.product.status);
   const filter = useSelector((state) => state.product.filteredproductsList);
 

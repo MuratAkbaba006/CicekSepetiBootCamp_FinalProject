@@ -1,5 +1,4 @@
 import { AxiosPrivate, AxiosPublic } from '../config/AxiosBase';
-import axios from 'axios';
 export const PostImage =
   (file, setProgress, setIsCompleteUpload) => (dispatch) => {
     AxiosPrivate.post('/file/upload/image', file, {
@@ -110,7 +109,5 @@ export const AddProduct =
         );
         return data;
       })
-      .then((response) => {
-
-      });
+      .then((response) => {});
   };

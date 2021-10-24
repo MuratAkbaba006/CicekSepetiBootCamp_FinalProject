@@ -14,9 +14,12 @@ export const getAllProducts = () => (dispatch) => {
 export const getByCategory = (category_id) => (dispatch) => {
   dispatch({ type: 'FETCH_BY_CATEGORIES_START' });
   AxiosPublic.get('/product/all').then((res) => {
-  dispatch({ type: 'FETCH_BY_CATEGORIES_SUCCESS', payload: res.data, category_id:category_id });
-
-  })
+    dispatch({
+      type: 'FETCH_BY_CATEGORIES_SUCCESS',
+      payload: res.data,
+      category_id: category_id,
+    });
+  });
 };
 
 export const getSingleProduct = (product_id) => (dispatch) => {
@@ -30,10 +33,8 @@ export const getSingleProduct = (product_id) => (dispatch) => {
     );
 };
 
-
-
 export const buyProduct = (product_id) => (dispatch) => {
   AxiosPrivate.put(`/product/purchase/${product_id}`).then((res) => {
-    dispatch({type: 'BUY_PRODUCT_SUCCESS',payload:res.data})
-  })
-}
+    dispatch({ type: 'BUY_PRODUCT_SUCCESS', payload: res.data });
+  });
+};

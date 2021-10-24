@@ -1,84 +1,83 @@
 const ProductState = {
-  products:[],
-  filteredproductsList:[],
-  currentProduct:null,
-  status:'idle',
-  error:null
-}
+  products: [],
+  filteredproductsList: [],
+  currentProduct: null,
+  status: 'idle',
+  error: null,
+};
 
-const ProductsReducer = (state = ProductState,action) => {
-  switch(action.type)
-  {
-    case 'FETCH_ALL_PRODUCTS_START':{
+const ProductsReducer = (state = ProductState, action) => {
+  switch (action.type) {
+    case 'FETCH_ALL_PRODUCTS_START': {
       return {
         ...state,
-        status:'loading'
-      }
+        status: 'loading',
+      };
     }
-    case 'FETCH_ALL_PRODUCTS_SUCCESS':{
-      return{
-        ...state,
-        status:'succeded',
-        products:action.payload,
-        filteredproductsList:action.payload
-      }
-    }
-    case 'FETCH_ALL_PRODUCTS_ERROR' :{
-      return{
-        ...state,
-        status:'error',
-        error:action.payload
-      }
-    }
-    case 'FETCH_BY_CATEGORIES_START':{
+    case 'FETCH_ALL_PRODUCTS_SUCCESS': {
       return {
         ...state,
-        status:'loading'
-      }
+        status: 'succeded',
+        products: action.payload,
+        filteredproductsList: action.payload,
+      };
     }
-    case 'FETCH_BY_CATEGORIES_SUCCESS':{
-     if(action.category_id === '1')
-     {
-      return{
-        ...state,
-        products:action.payload,
-        status:'succeded',
-        filteredproductsList:action.payload
-      }
-     }
-     else{
-      const filteredProducts = action.payload.filter((product) => product.category.id === action.category_id)
-      return{
-        ...state,
-        status:'succeded',
-        filteredproductsList:filteredProducts
-      }
-     }
-    }
-    case 'FETCH_SINGLE_PRODUCT_START':{
+    case 'FETCH_ALL_PRODUCTS_ERROR': {
       return {
         ...state,
-        status:'loading'
-      }
+        status: 'error',
+        error: action.payload,
+      };
     }
-    case 'FETCH_SINGLE_PRODUCT_SUCCESS':{
+    case 'FETCH_BY_CATEGORIES_START': {
       return {
         ...state,
-        status:'succeded',
-        currentProduct:action.payload
+        status: 'loading',
+      };
+    }
+    case 'FETCH_BY_CATEGORIES_SUCCESS': {
+      if (action.category_id === '1') {
+        return {
+          ...state,
+          products: action.payload,
+          status: 'succeded',
+          filteredproductsList: action.payload,
+        };
+      } else {
+        const filteredProducts = action.payload.filter(
+          (product) => product.category.id === action.category_id
+        );
+        return {
+          ...state,
+          status: 'succeded',
+          filteredproductsList: filteredProducts,
+        };
       }
     }
-    case 'FETCH_SINGLE_PRODUCT_ERROR':{
+    case 'FETCH_SINGLE_PRODUCT_START': {
       return {
         ...state,
-        status:'error',
-        error:action.payload
-      }
+        status: 'loading',
+      };
+    }
+    case 'FETCH_SINGLE_PRODUCT_SUCCESS': {
+      return {
+        ...state,
+        status: 'succeded',
+        currentProduct: action.payload,
+      };
+    }
+    case 'FETCH_SINGLE_PRODUCT_ERROR': {
+      return {
+        ...state,
+        status: 'error',
+        error: action.payload,
+      };
     }
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default ProductsReducer
+export default ProductsReducer;

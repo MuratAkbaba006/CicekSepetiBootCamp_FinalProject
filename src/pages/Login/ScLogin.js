@@ -1,5 +1,4 @@
-import styled from "styled-components";
-
+import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
@@ -14,7 +13,7 @@ export const ImageArea = styled.div`
     height: 100%;
   }
 
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -26,10 +25,9 @@ export const FormArea = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     width: 100%;
-  position: absolute;
-  min-height: 100%;
-
+    position: absolute;
+    min-height: 100%;
   }
 `;
