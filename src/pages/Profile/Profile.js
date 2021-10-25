@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ProfileContainer,
-  MailArea,
-  Content,
-  ContentTitleArea,
-  ContentTitle,
-  OffersArea,
-} from './ScProfile';
-import Header from '../../components/Header/Header';
-import ProfileIcon from '../../assets/Profile/Group 6876.svg';
 import Cookie from 'js-cookie';
 import jwt_decode from 'jwt-decode';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGivenOffers, getReceivedOffers,offerStatusIdle } from '../../actions/Account';
+import { getGivenOffers, getReceivedOffers, offerStatusIdle } from '../../actions/Account';
 import Offer from '../../components/Offer/Offer';
+import Header from '../../components/Header/Header';
+import { ProfileContainer, MailArea, Content, ContentTitleArea, ContentTitle, OffersArea } from './ScProfile';
+import ProfileIcon from '../../assets/Profile/Group 6876.svg';
 
 const Profile = () => {
   const [currentTitle, setCurrentTitle] = useState('Teklif Aldıklarım');
@@ -25,7 +18,6 @@ const Profile = () => {
   const status = useSelector((state) => state.account.status);
   const titles = ['Teklif Aldıklarım', 'Teklif Verdiklerim'];
 
-
   useEffect(() => {
     if (status === 'idle') {
       dispatch(getReceivedOffers());
@@ -35,8 +27,8 @@ const Profile = () => {
   useEffect(() => {
     return () => {
       dispatch(offerStatusIdle());
-    }
-  },[])
+    };
+  }, []);
 
   const handleTitleChange = (title) => {
     setCurrentTitle(title);
@@ -66,10 +58,7 @@ const Profile = () => {
           ))}
         </ContentTitleArea>
         <OffersArea>
-          {(currentTitle === 'Teklif Aldıklarım'
-            ? receivedOffers
-            : givenOffers
-          ).map((offer) => (
+          {(currentTitle === 'Teklif Aldıklarım' ? receivedOffers : givenOffers).map((offer) => (
             <Offer key={offer.id} name={currentTitle} offer={offer} />
           ))}
         </OffersArea>

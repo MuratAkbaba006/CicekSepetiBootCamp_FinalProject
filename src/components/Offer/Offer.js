@@ -1,9 +1,12 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, Suspense, lazy } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { rejectOffer, acceptOffer, getReceivedOffers, offerStatusIdle } from '../../actions/Account';
+import Loading from '../Loading/Loading';
 import {
   OfferContainer,
   ContentArea,
   ButtonArea,
-  Button,
   RejectButton,
   ConfirmButton,
   DescriptionArea,
@@ -12,16 +15,10 @@ import {
   GaveOffersAcceptArea,
   BuyButton,
 } from './ScOffer';
-import {
-  rejectOffer,
-  acceptOffer,
-  getReceivedOffers,
-  offerStatusIdle,
-} from '../../actions/Account';
-import { useDispatch } from 'react-redux';
-import Modal from '../Modal/Modal';
-import BuyModal from '../BuyModal/BuyModal';
-import { useHistory } from 'react-router';
+
+const Modal = lazy(() => import('../Modal/Modal'));
+const BuyModal = lazy(() => import('../BuyModal/BuyModal'));
+
 const Offer = ({ offer, name }) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -51,10 +48,9 @@ const Offer = ({ offer, name }) => {
   const handleBuyProduct = (e) => {
     e.stopPropagation();
     modalRef.current.openModal();
-    //dispatch(buyProduct(offer.product.id))
   };
   const OfferStatusControl = (status) => {
-    //Alınan Teklifler
+    // Alınan Teklifler
     if (status === 'offered') {
       return (
         <>
@@ -68,8 +64,8 @@ const Offer = ({ offer, name }) => {
     }
   };
 
-  const handlegoDetail = (e) => {
-    const id = offer.product.id;
+  const handlegoDetail = () => {
+    const { id } = offer.product;
     history.push(`/detail/${id}`);
   };
 
@@ -85,11 +81,7 @@ const Offer = ({ offer, name }) => {
       if (offer.isSold === 'sold') {
         return <div style={{ color: '#46AF32' }}>Satın Alındı</div>;
       } else {
-        return (
-          <StatusLabel status={status}>
-            {status === 'rejected' ? 'Reddedildi' : 'Bekleniyor'}
-          </StatusLabel>
-        );
+        return <StatusLabel status={status}>{status === 'rejected' ? 'Reddedildi' : 'Bekleniyor'}</StatusLabel>;
       }
     }
   };
@@ -102,11 +94,7 @@ const Offer = ({ offer, name }) => {
         <DescriptionArea>
           <p>{offer.product.title}</p>
           <div>
-            <label htmlFor="">
-              {name === 'Teklif Aldıklarım'
-                ? 'Alınan Teklif:'
-                : 'Verilen Teklif:'}
-            </label>
+            <label htmlFor="">{name === 'Teklif Aldıklarım' ? 'Alınan Teklif:' : 'Verilen Teklif:'}</label>
             <p>{offer.offeredPrice} TL</p>
           </div>
         </DescriptionArea>
@@ -116,13 +104,11 @@ const Offer = ({ offer, name }) => {
           ? OfferStatusControl(offer.status)
           : GaveOfferStatusControl(offer.status, offer.product.isSold)}
       </ButtonArea>
-      <Modal ref={modalRef}>
-        <BuyModal
-          modalRef={modalRef}
-          offer={offer}
-          GaveOfferStatusControl={GaveOfferStatusControl}
-        />
-      </Modal>
+      <Suspense fallback={<Loading />}>
+        <Modal ref={modalRef}>
+          <BuyModal modalRef={modalRef} offer={offer} GaveOfferStatusControl={GaveOfferStatusControl} />
+        </Modal>
+      </Suspense>
     </OfferContainer>
   );
 };

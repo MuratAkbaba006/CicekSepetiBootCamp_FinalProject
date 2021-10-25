@@ -1,10 +1,19 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
-import { ModalWrapper, ModalBackdrop, ModalBox } from './ScModal';
 import ReactDOM from 'react-dom';
+import { ModalWrapper, ModalBackdrop, ModalBox } from './ScModal';
+
 const Modal = forwardRef((props, ref) => {
   // function component'de ref yapısını kullanabilmek için forward ref içerisinde componenti kullanmalıyoz
   const [display, setDisplay] = useState(false);
   // modal açıdığında default değeri true
+
+  const open = () => {
+    setDisplay(true);
+  };
+
+  const close = () => {
+    setDisplay(false);
+  };
 
   useImperativeHandle(ref, () => {
     return {
@@ -15,28 +24,19 @@ const Modal = forwardRef((props, ref) => {
   // burada return etmiş olduğumuz metotlar Modal'ın referansının
   // currenti içerisinde yer alır
 
-  const open = () => {
-    setDisplay(true);
-  };
-
-  const close = () => {
-    setDisplay(false);
-  };
-
   if (display) {
     return ReactDOM.createPortal(
-      <ModalWrapper style={{}}>
+      <ModalWrapper>
         <ModalBackdrop onClick={close} />
         <ModalBox>{props.children}</ModalBox>
       </ModalWrapper>,
       document.getElementById('modal-root')
     );
-  }
-  // ReactDOM.createPortal ile ilk parametre olarak portal açacağımız
-  // yerde bulunmasını istediğimiz içerik, ikinci parametre olarak ise
-  // portalın wrapperi
-  else {
+  } else {
     return null;
   }
 });
 export default Modal;
+// ReactDOM.createPortal ile ilk parametre olarak portal açacağımız
+// yerde bulunmasını istediğimiz içerik, ikinci parametre olarak ise
+// portalın wrapperi

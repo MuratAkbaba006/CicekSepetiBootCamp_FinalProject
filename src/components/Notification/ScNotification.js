@@ -1,4 +1,5 @@
-import styled,{keyframes,css} from 'styled-components'
+import styled, { keyframes, css } from 'styled-components';
+
 export const SlideLeft = keyframes`
   0%{
     margin-left:120%
@@ -27,15 +28,7 @@ export const NotificationItem = styled.div`
   overflow: hidden;
   background-color: ${(props) => props.colors.bg};
   margin-bottom: 10px;
-  animation: ${(props) =>
-      props.close
-        ? css`
-            ${SlideRight}
-          `
-        : css`
-            ${SlideLeft}
-          `}
-    0.4s;
+  animation: ${(props) => (props.close ? css`${SlideRight}` : css`${SlideLeft}`)} 0.4s;
   animation-fill-mode: forwards;
   width: 300px;
   p {

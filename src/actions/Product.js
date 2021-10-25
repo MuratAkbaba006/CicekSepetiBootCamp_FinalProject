@@ -6,9 +6,9 @@ export const getAllProducts = () => (dispatch) => {
     .then((res) => {
       dispatch({ type: 'FETCH_ALL_PRODUCTS_SUCCESS', payload: res.data });
     })
-    .catch((error) =>
-      dispatch({ type: 'FETCH_ALL_PRODUCTS_ERROR', payload: error })
-    );
+    .catch((error) => {
+      dispatch({ type: 'FETCH_ALL_PRODUCTS_ERROR', payload: error });
+    });
 };
 
 export const getByCategory = (category_id) => (dispatch) => {
@@ -17,7 +17,7 @@ export const getByCategory = (category_id) => (dispatch) => {
     dispatch({
       type: 'FETCH_BY_CATEGORIES_SUCCESS',
       payload: res.data,
-      category_id: category_id,
+      category_id,
     });
   });
 };
@@ -28,9 +28,9 @@ export const getSingleProduct = (product_id) => (dispatch) => {
     .then((res) => {
       dispatch({ type: 'FETCH_SINGLE_PRODUCT_SUCCESS', payload: res.data });
     })
-    .catch((error) =>
-      dispatch({ type: 'FETCH_SINGLE_PRODUCT_ERROR', payload: error })
-    );
+    .catch((error) => {
+      dispatch({ type: 'FETCH_SINGLE_PRODUCT_ERROR', payload: error });
+    });
 };
 
 export const buyProduct = (product_id) => (dispatch) => {

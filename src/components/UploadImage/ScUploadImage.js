@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 export const UploadImageContainer = styled.div`
   display: flex;
   flex-direction: column;

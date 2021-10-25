@@ -1,8 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useRef, useState, Suspense, lazy } from 'react';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
+import { v4 as uuid } from 'uuid';
+import { getGivenOffers, cancelOffer, offerStatusIdle } from '../../actions/Account';
+import { addNotification } from '../../actions/Notification';
+import Loading from '../../components/Loading/Loading';
 import Header from '../../components/Header/Header';
 import { getSingleProduct } from '../../actions/Product';
+import { UpperFirstLetter } from '../../utils/utils';
 import {
   ProductDetailContainer,
   ImageArea,
@@ -13,25 +19,14 @@ import {
   Price,
   ButtonArea,
   Description,
-  ModalTitle,
-  SmallproductArea,
-  Information,
   BuyInformation,
   OfferInformation,
 } from './ScProductDetail';
-import { UpperFirstLetter } from '../../utils/utils';
-import Modal from '../../components/Modal/Modal';
-import OfferModal from '../../components/OfferModal/OfferModal';
-import {
-  getGivenOffers,
-  cancelOffer,
-  offerStatusIdle,
-} from '../../actions/Account';
-import BuyModal from '../../components/BuyModal/BuyModal';
-import Cookies from 'js-cookie';
-import { addNotification } from '../../actions/Notification';
-import { v4 as uuid } from 'uuid';
-import Loading from '../../components/Loading/Loading';
+
+const Modal = lazy(() => import('../../components/Modal/Modal'));
+const OfferModal = lazy(() => import('../../components/OfferModal/OfferModal'));
+const BuyModal = lazy(() => import('../../components/BuyModal/BuyModal'));
+
 const ProductDetail = () => {
   const { product_id } = useParams();
   const { auth_token } = Cookies.get();
@@ -58,7 +53,6 @@ const ProductDetail = () => {
     }
   };
   useEffect(() => {
-    //isGivenOfferControl();
     dispatch(getSingleProduct(product_id));
     if (auth_token !== undefined) {
       dispatch(getGivenOffers());
@@ -67,12 +61,6 @@ const ProductDetail = () => {
       dispatch(offerStatusIdle());
     };
   }, []);
-
-  useEffect(() => {
-    if (auth_token !== undefined) {
-      isGivenOfferControl();
-    }
-  }, [givenOffers]);
 
   const openBuyModal = () => {
     if (auth_token === undefined) {
@@ -93,13 +81,12 @@ const ProductDetail = () => {
       setIsGivenOffer(false);
       setOffer(null);
     } else {
-      givenOffers.map((offer) => {
-        if (offer.product.id === product_id) {
+      givenOffers.map((givenoffer) => {
+        if (givenoffer.product.id === product_id) {
           setIsGivenOffer(true);
-
-          setOffer(offer);
+          setOffer(givenoffer);
         } else {
-          counter++;
+          counter += 1;
           if (counter === givenOffers.length) {
             setIsGivenOffer(false);
             setOffer(null);
@@ -108,6 +95,11 @@ const ProductDetail = () => {
       });
     }
   };
+  useEffect(() => {
+    if (auth_token !== undefined) {
+      isGivenOfferControl();
+    }
+  }, [givenOffers]);
 
   const handleCancelOffer = () => {
     dispatch(cancelOffer(offer.id));
@@ -145,9 +137,7 @@ const ProductDetail = () => {
             </div>
           </Info>
           <Price>{product.price} TL</Price>
-          {product.isSold === true && (
-            <BuyInformation>Bu Ürün Satışta Değil</BuyInformation>
-          )}
+          {product.isSold === true && <BuyInformation>Bu Ürün Satışta Değil</BuyInformation>}
           {product.isSold === false && isGivenOffer === true && (
             <OfferInformation>
               <label htmlFor="offer">Verilen Teklif: </label>
@@ -157,9 +147,7 @@ const ProductDetail = () => {
           {product.isSold === false && isGivenOffer !== true && (
             <ButtonArea>
               <button onClick={openBuyModal}>Satın Al</button>
-              {product.isOfferable && (
-                <button onClick={openModal}>Teklif Ver</button>
-              )}
+              {product.isOfferable && <button onClick={openModal}>Teklif Ver</button>}
             </ButtonArea>
           )}
 
@@ -175,19 +163,21 @@ const ProductDetail = () => {
           </Description>
         </Content>
       </ProductArea>
-      <Modal ref={modalRef}>
-        <OfferModal
-          product={product}
-          modalRef={modalRef}
-          setIsGivenOffer={setIsGivenOffer}
-          isGivenOfferControl={isGivenOfferControl}
-          setOffers={setOffer}
-          currentOffer={offer}
-        />
-      </Modal>
-      <Modal ref={buyModalRef}>
-        <BuyModal modalRef={buyModalRef} offer={offer} product={product} />
-      </Modal>
+      <Suspense fallback={<Loading />}>
+        <Modal ref={modalRef}>
+          <OfferModal
+            product={product}
+            modalRef={modalRef}
+            setIsGivenOffer={setIsGivenOffer}
+            isGivenOfferControl={isGivenOfferControl}
+            setOffers={setOffer}
+            currentOffer={offer}
+          />
+        </Modal>
+        <Modal ref={buyModalRef}>
+          <BuyModal modalRef={buyModalRef} offer={offer} product={product} />
+        </Modal>
+      </Suspense>
     </ProductDetailContainer>
   );
 };

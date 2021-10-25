@@ -1,21 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import {
-  AuthFormContainer,
-  FormArea,
-  InputArea,
-  Button,
-  Error,
-  RouteAuth,
-} from './ScAuthForm';
-import { useHistory } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { SignIn, SignUp , ClearStatusCode } from '../../actions/Auth';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import { addNotification } from '../../actions/Notification';
-import { useSelector } from 'react-redux';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { SignIn, SignUp } from '../../actions/Auth';
+import { AuthFormContainer, FormArea, InputArea, Button, Error, RouteAuth } from './ScAuthForm';
 
 const AuthForm = ({ title }) => {
   const history = useHistory();
@@ -25,7 +17,7 @@ const AuthForm = ({ title }) => {
   const mailRef = useRef();
   const [showPassword, setShowPassword] = useState(false);
 
-  const _handleSubmit = (values, { setSubmitting }) => {
+  const handleFormSubmit = (values, { setSubmitting }) => {
     if (title === 'Giriş Yap') {
       dispatch(SignIn(values.email, values.password));
       setSubmitting(false);
@@ -36,7 +28,6 @@ const AuthForm = ({ title }) => {
   };
 
   useEffect(() => {
-    console.log(statusCode);
     if (statusCode.code === 401 && statusCode.code !== null) {
       dispatch(
         addNotification({
@@ -73,26 +64,15 @@ const AuthForm = ({ title }) => {
             password: '',
           }}
           validationSchema={Yup.object({
-            email: Yup.string()
-              .email('Lütfen geçerli bir mail adresi girin')
-              .required('Mail Alanı boş bırakılamaz'),
+            email: Yup.string().email('Lütfen geçerli bir mail adresi girin').required('Mail Alanı boş bırakılamaz'),
             password: Yup.string()
               .min(8, 'Şifreniz en az 8 karakterden oluşmalıdır')
               .max(20, 'Şifreniz en fazla 20 karakterden oluşabilir')
               .required('Şifre Alanı boş bırakılamaz'),
           })}
-          onSubmit={_handleSubmit}
+          onSubmit={handleFormSubmit}
         >
-          {({
-            values,
-            errors,
-            handleChange,
-            handleSubmit,
-            handleBlur,
-            touched,
-            dirty,
-            isSubmitting,
-          }) => (
+          {({ values, errors, handleChange, handleSubmit, handleBlur, touched, dirty, isSubmitting }) => (
             <form onSubmit={handleSubmit}>
               <InputArea>
                 <label htmlFor="email">Email</label>
@@ -148,9 +128,7 @@ const AuthForm = ({ title }) => {
                     />
                   )}
                 </div>
-                {errors.password && touched.password && (
-                  <Error>{errors.password}</Error>
-                )}
+                {errors.password && touched.password && <Error>{errors.password}</Error>}
                 {title === 'Giriş Yap' && (
                   <a htmlFor="" href="#">
                     Şifremi Unuttum
@@ -158,32 +136,18 @@ const AuthForm = ({ title }) => {
                 )}
               </InputArea>
 
-              <Button
-                type="submit"
-                title={title}
-                disabled={
-                  !dirty || isSubmitting || errors.password || errors.email
-                }
-              >
+              <Button type="submit" title={title} disabled={!dirty || isSubmitting || errors.password || errors.email}>
                 {title}
               </Button>
             </form>
           )}
         </Formik>
         <footer>
+          {title === 'Giriş Yap' ? <span>Hesabın yok mu?</span> : <span>Zaten üye misin?</span>}
           {title === 'Giriş Yap' ? (
-            <span>Hesabın yok mu?</span>
+            <RouteAuth onClick={() => history.push('/register')}>Üye Ol</RouteAuth>
           ) : (
-            <span>Zaten üye misin?</span>
-          )}
-          {title === 'Giriş Yap' ? (
-            <RouteAuth onClick={() => history.push('/register')}>
-              Üye Ol
-            </RouteAuth>
-          ) : (
-            <RouteAuth onClick={() => history.push('/login')}>
-              Giriş Yap
-            </RouteAuth>
+            <RouteAuth onClick={() => history.push('/login')}>Giriş Yap</RouteAuth>
           )}
         </footer>
       </FormArea>

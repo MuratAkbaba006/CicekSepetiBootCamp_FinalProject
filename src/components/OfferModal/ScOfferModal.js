@@ -52,8 +52,7 @@ export const Form = styled.form`
 export const Offer = styled.div`
   display: flex;
   align-items: center;
-  background-color: ${(props) =>
-    props.offer.id === props.id ? '#F0F8FF' : '#FFFFFF'};
+  background-color: ${(props) => (props.offer.id === props.id ? '#F0F8FF' : '#FFFFFF')};
   width: 100%;
   padding: 9px;
   box-sizing: border-box;
@@ -78,8 +77,7 @@ export const CustomOffer = styled.div`
     padding: 9px;
     box-sizing: border-box;
     border-radius: 8px;
-    background-color: ${(props) =>
-      props.error.message ? '#FFE5E5' : '#F4F4F4'};
+    background-color: ${(props) => (props.error.message ? '#FFE5E5' : '#F4F4F4')};
     border: none;
     font-size: 16px;
     :focus {

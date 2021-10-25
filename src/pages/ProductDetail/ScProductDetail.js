@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
+
 export const ProductDetailContainer = styled.div`
   width: 100%;
   height: 100vh;

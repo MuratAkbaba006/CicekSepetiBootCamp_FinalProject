@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+
 export const ProfileContainer = styled.div`
   display: flex;
   width: 100%;
@@ -36,10 +37,8 @@ export const ContentTitleArea = styled.div`
 `;
 
 export const ContentTitle = styled.div`
-  border-bottom: ${(props) =>
-    props.currentTitle === props.title ? '2px solid #4B9CE2' : ''};
-  color: ${(props) =>
-    props.currentTitle === props.title ? '#4B9CE2' : '#B1B1B1'};
+  border-bottom: ${(props) => (props.currentTitle === props.title ? '2px solid #4B9CE2' : '')};
+  color: ${(props) => (props.currentTitle === props.title ? '#4B9CE2' : '#B1B1B1')};
   padding: 3px;
   margin-right: 5px;
   cursor: pointer;

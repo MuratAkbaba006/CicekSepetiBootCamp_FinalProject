@@ -1,13 +1,14 @@
 import { AxiosPrivate } from '../config/AxiosBase';
+
 export const getGivenOffers = () => (dispatch) => {
   dispatch({ type: 'GET_GIVEN_OFFERS_START' });
   AxiosPrivate.get('/account/given-offers')
     .then((res) => {
       dispatch({ type: 'GET_GIVEN_OFFERS_SUCCESS', payload: res.data });
     })
-    .catch((error) =>
-      dispatch({ type: 'GET_GIVEN_OFFERS_ERROR', payload: error })
-    );
+    .catch((error) => {
+      dispatch({ type: 'GET_GIVEN_OFFERS_ERROR', payload: error });
+    });
 };
 
 export const getReceivedOffers = () => (dispatch) => {
@@ -16,9 +17,9 @@ export const getReceivedOffers = () => (dispatch) => {
     .then((res) => {
       dispatch({ type: 'GET_RECEIVED_OFFERS_SUCCESS', payload: res.data });
     })
-    .catch((error) =>
-      dispatch({ type: 'GET_RECEIVED_OFFERS_ERROR', payload: error })
-    );
+    .catch((error) => {
+      dispatch({ type: 'GET_RECEIVED_OFFERS_ERROR', payload: error });
+    });
 };
 
 export const postOffer = (product_id, offer) => (dispatch) => {
@@ -43,7 +44,7 @@ export const acceptOffer = (id) => (dispatch) => {
 
 export const cancelOffer = (id) => (dispatch) => {
   AxiosPrivate.delete(`/account/cancel-offer/${id}`).then((res) => {
-    dispatch({ type: 'CANCEL_OFFER_SUCCESS', payload: res, id: id });
+    dispatch({ type: 'CANCEL_OFFER_SUCCESS', payload: res, id });
   });
 };
 

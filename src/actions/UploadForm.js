@@ -1,27 +1,31 @@
 import { AxiosPrivate, AxiosPublic } from '../config/AxiosBase';
-export const PostImage =
-  (file, setProgress, setIsCompleteUpload) => (dispatch) => {
-    AxiosPrivate.post('/file/upload/image', file, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      onUploadProgress: ({ loaded, total }) => {
-        let percent = Math.floor((loaded * 100) / total);
-        if (percent < 100) {
-          setProgress(percent);
-        }
-      },
+
+export const PostImage = (file, setProgress, setIsCompleteUpload) => (dispatch) => {
+  AxiosPrivate.post('/file/upload/image', file, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    onUploadProgress: ({ loaded, total }) => {
+      const percent = Math.floor((loaded * 100) / total);
+      if (percent < 100) {
+        setProgress(percent);
+      }
+    },
+  })
+    .then((res) => {
+      dispatch({ type: 'POST_IMAGE_SUCCESS', payload: res.data });
+      setProgress(100);
+      setIsCompleteUpload(true);
+      setTimeout(() => {
+        setProgress(0);
+      }, 100);
     })
-      .then((res) => {
-        dispatch({ type: 'POST_IMAGE_SUCCESS', payload: res.data });
-        setProgress(100);
-        setIsCompleteUpload(true);
-        setTimeout(() => {
-          setProgress(0);
-        }, 100);
-      })
-      .catch((error) => dispatch({ type: 'POST_IMAGE_ERROR', payload: error }));
-  };
+    .catch((error) => dispatch({ type: 'POST_IMAGE_ERROR', payload: error }));
+};
+
+export const PostImageClear = () => (dispatch) => {
+  dispatch({ type: 'POST_IMAGE_CLEAR' });
+};
 
 const BrandRequest = () => {
   return AxiosPublic.get('/detail/brand/all');
@@ -39,18 +43,11 @@ const CategoryRequest = () => {
 };
 
 export const getAllDropdownItem = () => (dispatch) => {
-  Promise.all([
-    BrandRequest(),
-    ColorRequest(),
-    StatusRequest(),
-    CategoryRequest(),
-  ])
+  Promise.all([BrandRequest(), ColorRequest(), StatusRequest(), CategoryRequest()])
     .then((res) => {
       dispatch({ type: 'GET_ALL_DROPDOWNITEM_SUCCESS', payload: res });
     })
-    .catch((error) =>
-      dispatch({ type: 'GET_ALL_DROPDOWNITEM_ERROR', payload: error })
-    );
+    .catch((error) => dispatch({ type: 'GET_ALL_DROPDOWNITEM_ERROR', payload: error }));
 };
 
 const SingleBrandRequest = (brandId) => {
@@ -69,45 +66,34 @@ const SingleCategoryRequest = (categoryId) => {
 };
 
 export const AddProduct =
-  ({
-    price,
-    imageUrl,
-    title,
-    statusId,
-    colorId,
-    brandId,
-    categoryId,
-    description,
-    isOfferable,
-  }) =>
-  (dispatch) => {
-    Promise.all([
-      SingleBrandRequest(brandId),
-      SingleColorRequest(colorId),
-      SingleStatusRequest(statusId),
-      SingleCategoryRequest(categoryId),
-    ])
-      .then((res) => {
-        const data = AxiosPrivate.post(
-          '/product/create',
-          {
-            price,
-            imageUrl,
-            title,
-            status: res[2].data,
-            color: res[1].data,
-            brand: res[0].data,
-            category: res[3].data,
-            description,
-            isOfferable,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
+  ({ price, imageUrl, title, statusId, colorId, brandId, categoryId, description, isOfferable }) =>
+    () => {
+      Promise.all([
+        SingleBrandRequest(brandId),
+        SingleColorRequest(colorId),
+        SingleStatusRequest(statusId),
+        SingleCategoryRequest(categoryId),
+      ])
+        .then((res) => {
+          const data = AxiosPrivate.post(
+            '/product/create',
+            {
+              price,
+              imageUrl,
+              title,
+              status: res[2].data,
+              color: res[1].data,
+              brand: res[0].data,
+              category: res[3].data,
+              description,
+              isOfferable,
             },
-          }
-        );
-        return data;
-      })
-      .then((response) => {});
-  };
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          return data;
+        });
+    };

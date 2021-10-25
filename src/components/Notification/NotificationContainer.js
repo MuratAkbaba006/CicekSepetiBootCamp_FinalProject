@@ -1,18 +1,18 @@
 import React from 'react';
-import styled from 'styled-components'
-import {useSelector} from 'react-redux'
-import Notification from './Notification'
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import Notification from './Notification';
+
 const NotificationContainer = (props) => {
   const notifications = useSelector((state) => state.notification.notifications);
-  if(notifications.length===0)
-  {
+  if (notifications.length === 0) {
     return false;
   }
   return (
     <div>
       <NotificationWrapper>
         {notifications.map((noti) => {
-          return <Notification  key={noti.id} {...noti} />;
+          return <Notification key={noti.id} {...noti} />;
         })}
       </NotificationWrapper>
       {props.children}

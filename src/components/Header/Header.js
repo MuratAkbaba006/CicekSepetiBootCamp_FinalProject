@@ -1,11 +1,12 @@
 import React from 'react';
-import {HeaderContainer,ButtonContainer,AddProductTitle} from './ScHeader';
-import { useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
+import { useHistory } from 'react-router-dom';
+import { HeaderContainer, ButtonContainer, AddProductTitle } from './ScHeader';
 import logo from '../../assets/Home/logo.svg';
 import plus from '../../assets/Home/plus.svg';
 import profile from '../../assets/Home/ProfileIcon.svg';
-import Cookies from 'js-cookie';
-import { useSelector } from 'react-redux';
+
 const Header = () => {
   const history = useHistory();
   const { auth_token } = Cookies.get();
@@ -17,7 +18,7 @@ const Header = () => {
         {auth_token !== undefined || access !== null ? (
           <>
             <ButtonContainer onClick={() => history.push('/upload_product')}>
-              <img src={plus} alt="icon"></img>
+              <img src={plus} alt="icon" />
               <AddProductTitle>ÜrünEkle</AddProductTitle>
             </ButtonContainer>
             <ButtonContainer onClick={() => history.push('/profile')}>
@@ -36,5 +37,4 @@ const Header = () => {
   );
 };
 
-export default Header;
-
+export default React.memo(Header);

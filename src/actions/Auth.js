@@ -17,7 +17,7 @@ export const SignIn = (email, password) => (dispatch) => {
         Cookie.set('auth_token', res.data.access_token);
       }
     })
-    .catch((error) => dispatch({ type: 'LOGIN_ERROR', payload: 401 }));
+    .catch(() => dispatch({ type: 'LOGIN_ERROR', payload: 401 }));
 };
 
 export const SignUp = (email, password) => (dispatch) => {
@@ -33,7 +33,7 @@ export const SignUp = (email, password) => (dispatch) => {
         Cookie.set('auth_token', res.data.access_token);
       }
     })
-    .catch((error) => dispatch({ type: 'REGISTER_ERROR', payload: 409 }));
+    .catch(() => dispatch({ type: 'REGISTER_ERROR', payload: 409 }));
 };
 
 export const LogOut = () => (dispatch) => {

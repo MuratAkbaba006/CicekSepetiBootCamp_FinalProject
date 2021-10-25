@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
+
 export const ModalWrapper = styled.div`
   position: fixed;
   top: 0;

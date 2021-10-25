@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {SlideLeft,SlideRight,NotificationItem,Content,Bar} from './ScNotification'
+import { useDispatch } from 'react-redux';
 import { GoAlert } from 'react-icons/go';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
+import { NotificationItem, Content, Bar } from './ScNotification';
 import { removeNotification } from '../../actions/Notification';
+
 const Notification = (props) => {
   const [colors, setColors] = useState({
     bg: '',
@@ -42,7 +43,7 @@ const Notification = (props) => {
 
   useEffect(() => {
     if (width === 100) {
-      //close Notification
+      // close Notification
       handleCloseNotification();
     }
   }, [width]);
@@ -74,26 +75,14 @@ const Notification = (props) => {
   }, []);
 
   return (
-    <NotificationItem
-      onMouseEnter={handleStopTimer}
-      onMouseLeave={handleStartTimer}
-      colors={colors}
-      close={close}
-    >
+    <NotificationItem onMouseEnter={handleStopTimer} onMouseLeave={handleStartTimer} colors={colors} close={close}>
       <Content type={props.type}>
-        {props.type === 'SUCCESS' && (
-          <BsFillCheckCircleFill style={{ fill: colors.icon }} size={22} />
-        )}
-        {props.type === 'ERROR' && (
-          <GoAlert style={{ fill: colors.icon }} size={25} />
-        )}
-        {props.type === 'WARNING' && (
-          <GoAlert style={{ fill: colors.icon }} size={25} />
-        )}
+        {props.type === 'SUCCESS' && <BsFillCheckCircleFill style={{ fill: colors.icon }} size={22} />}
+        {props.type === 'ERROR' && <GoAlert style={{ fill: colors.icon }} size={25} />}
+        {props.type === 'WARNING' && <GoAlert style={{ fill: colors.icon }} size={25} />}
         <p>{props.message}</p>
-        {/* <button onClick={() => setClose(true)}>Çıkış</button> */}
       </Content>
-      <Bar colors={colors} width={width}></Bar>
+      <Bar colors={colors} width={width} />
     </NotificationItem>
   );
 };

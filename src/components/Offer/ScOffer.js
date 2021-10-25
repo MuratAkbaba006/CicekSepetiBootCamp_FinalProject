@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
+
 export const OfferContainer = styled.div`
   border: 1px solid #f2f2f2;
   display: flex;
@@ -21,9 +22,9 @@ export const ContentArea = styled.div`
 export const ButtonArea = styled.div`
   margin-right: 15px;
   @media (max-width: 768px) {
-    display:flex;
-    justify-content:flex-end;
-    margin-right:8%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 8%;
   }
 `;
 export const Button = styled.button`
@@ -37,7 +38,7 @@ export const Button = styled.button`
 `;
 
 export const RejectButton = styled(Button)`
-  background-color: #F77474;
+  background-color: #f77474;
 `;
 
 export const ConfirmButton = styled(Button)`
@@ -71,8 +72,6 @@ export const DescriptionArea = styled.div`
       margin-right: 2px;
     }
   }
-
-
 `;
 
 export const StatusLabel = styled.div`
@@ -95,8 +94,8 @@ export const ImageArea = styled.div`
     object-fit: contain;
     border-radius: 8px;
     @media (max-width: 768px) {
-    width:70%;
-  }
+      width: 70%;
+    }
   }
 `;
 

@@ -21,6 +21,12 @@ const UploadFormReducer = (state = UploadFormState, action) => {
         error: action.payload,
       };
     }
+    case 'POST_IMAGE_CLEAR': {
+      return {
+        ...state,
+        imageUrl: ''
+      };
+    }
     case 'GET_ALL_DROPDOWNITEM_SUCCESS': {
       return {
         ...state,

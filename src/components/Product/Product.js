@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   GridItem,
   ProductInfoArea,
@@ -8,7 +9,7 @@ import {
   ProductImageArea,
 } from './ScProduct';
 import { UpperFirstLetter } from '../../utils/utils';
-import { useHistory } from 'react-router';
+
 const Product = ({ product }) => {
   const history = useHistory();
 

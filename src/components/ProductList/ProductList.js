@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Product from '../Product/Product';
 import Loading from '../Loading/Loading';
+
 const ProductList = () => {
   const status = useSelector((state) => state.product.status);
   const filter = useSelector((state) => state.product.filteredproductsList);

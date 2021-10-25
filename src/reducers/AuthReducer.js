@@ -36,7 +36,7 @@ const AuthReducer = (state = AuthState, action) => {
         ...state,
         status: 'error',
         error: action.payload,
-        statusCode:{code:action.payload,url:''}
+        statusCode: { code: action.payload, url: '' },
       };
     }
     case 'LOGIN_START': {

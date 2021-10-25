@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const AuthFormContainer = styled.div`
   width: 50%;
@@ -9,7 +9,7 @@ export const AuthFormContainer = styled.div`
   box-shadow: 0px 3px 12px #1e36480a;
   border-radius: 8px;
   margin-top: 25px;
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     width: 90%;
   }
 `;
@@ -28,7 +28,7 @@ export const FormArea = styled.div`
     p {
       font-size: 15px;
       text-align: center;
-      @media (max-width: 768px){
+      @media (max-width: 768px) {
         margin: 0;
       }
     }
@@ -42,7 +42,7 @@ export const FormArea = styled.div`
   }
   footer {
     margin-top: 8px;
-    color:#525252;
+    color: #525252;
     font-size: 15px;
   }
 `;
@@ -61,15 +61,14 @@ export const InputArea = styled.div`
     border-radius: 8px;
     font-size: 16px;
     color: #99a0a7;
-    background-color: #F4F4F4;
+    background-color: #f4f4f4;
     border: none;
     outline: none;
-    :focus{
-    background-color: #F0F8FF;
-    outline: auto;
-    outline-color: #4B9CE2;
-  }
-
+    :focus {
+      background-color: #f0f8ff;
+      outline: auto;
+      outline-color: #4b9ce2;
+    }
   }
   label {
     display: flex;
@@ -95,26 +94,24 @@ export const Button = styled.button`
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
-  border:none;
-  outline:none;
-  margin-top:${props=>props.title === 'Giriş Yap' ? '8px':'15px'};
-  :disabled{
+  border: none;
+  outline: none;
+  margin-top: ${(props) => (props.title === 'Giriş Yap' ? '8px' : '15px')};
+  :disabled {
     cursor: auto;
-
   }
-
 `;
 
 export const Error = styled.div`
-width: 80%;
-text-align: start;
-color:red;
-`
+  width: 80%;
+  text-align: start;
+  color: red;
+`;
 
 export const RouteAuth = styled.span`
-color:#4B9CE2;
-font-size:15px;
-font-weight: bold;
-margin-left: 3px;
-cursor:pointer;
-`
+  color: #4b9ce2;
+  font-size: 15px;
+  font-weight: bold;
+  margin-left: 3px;
+  cursor: pointer;
+`;

@@ -1,25 +1,12 @@
 import React, { useRef, useState } from 'react';
-import {
-  ModalTitle,
-  SmallproductArea,
-  Form,
-  Offer,
-  CustomOffer,
-  Button,
-} from './ScOfferModal';
-import cross from '../../assets/ProductDetail/Group 6618.svg';
 import Cookie from 'js-cookie';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { postOffer, getGivenOffers } from '../../actions/Account';
-const OfferModal = ({
-  product,
-  modalRef,
-  setIsGivenOffer,
-  isGivenOfferControl,
-  setOffers,
-  currentOffer,
-}) => {
+import { ModalTitle, SmallproductArea, Form, Offer, CustomOffer, Button } from './ScOfferModal';
+import cross from '../../assets/ProductDetail/Group 6618.svg';
+
+const OfferModal = ({ product, modalRef }) => {
   const [offer, setOffer] = useState({});
   const [error, setError] = useState({});
   const offer1Ref = useRef();
@@ -29,7 +16,7 @@ const OfferModal = ({
   const history = useHistory();
   const dispatch = useDispatch();
   const handleClick = (e) => {
-    if (isNaN(parseInt(e.target.value))) {
+    if (Number.isNaN(parseInt(e.target.value))) {
       setError({ message: 'Teklifiniz rakamlarlardan oluşmalıdır' });
     } else {
       setOffer({ id: e.target.id, offer: parseInt(e.target.value) });
@@ -74,7 +61,7 @@ const OfferModal = ({
       </SmallproductArea>
 
       <Form onSubmit={handleFormSubmit}>
-        <Offer id={'offer1'} offer={offer}>
+        <Offer id="offer1" offer={offer}>
           <input
             type="radio"
             name="offer"
@@ -83,9 +70,9 @@ const OfferModal = ({
             ref={offer1Ref}
             onClick={handleClick}
           />
-          <label>%20'si Kadar Teklif Ver</label>
+          <label>%20&apos;si Kadar Teklif Ver</label>
         </Offer>
-        <Offer id={'offer2'} offer={offer}>
+        <Offer id="offer2" offer={offer}>
           <input
             type="radio"
             name="offer"
@@ -94,9 +81,9 @@ const OfferModal = ({
             ref={offer2Ref}
             onClick={handleClick}
           />
-          <label>%30'si Kadar Teklif Ver</label>
+          <label>%30&apos;u Kadar Teklif Ver</label>
         </Offer>
-        <Offer id={'offer3'} offer={offer}>
+        <Offer id="offer3" offer={offer}>
           <input
             type="radio"
             name="offer"
@@ -105,7 +92,7 @@ const OfferModal = ({
             ref={offer3Ref}
             onClick={handleClick}
           />
-          <label>%40'si Kadar Teklif Ver</label>
+          <label>%40&apos;ı Kadar Teklif Ver</label>
         </Offer>
         <CustomOffer error={error}>
           <input
@@ -116,14 +103,9 @@ const OfferModal = ({
             onFocus={handleFocus}
             onChange={handleClick}
           />
-          {error.message !== null && (
-            <label style={{ color: 'red' }}>{error.message}</label>
-          )}
+          {error.message !== null && <label style={{ color: 'red' }}>{error.message}</label>}
         </CustomOffer>
-        <Button
-          type="submit"
-          disabled={error.message !== undefined ? true : false}
-        >
+        <Button type="submit" disabled={error.message !== undefined}>
           Onayla
         </Button>
       </Form>

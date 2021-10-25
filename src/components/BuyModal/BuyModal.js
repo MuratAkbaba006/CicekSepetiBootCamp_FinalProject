@@ -1,25 +1,18 @@
 import React from 'react';
-import {
-  BuyModalContainer,
-  ButtonArea,
-  Button,
-  CancelButton,
-  BuyButton,
-} from './ScBuyModal';
+import { v4 as uuid } from 'uuid';
 import { useDispatch } from 'react-redux';
+import { BuyModalContainer, ButtonArea, CancelButton, BuyButton } from './ScBuyModal';
 import { buyProduct, getSingleProduct } from '../../actions/Product';
 import { getGivenOffers, getReceivedOffers } from '../../actions/Account';
 import { addNotification } from '../../actions/Notification';
-import { v4 as uuid } from 'uuid';
+
 const BuyModal = ({ modalRef, offer, GaveOfferStatusControl, product }) => {
   const dispatch = useDispatch();
   const handleBuyProduct = (e) => {
     e.stopPropagation();
     dispatch(buyProduct(offer !== null ? offer.product.id : product.id));
     setTimeout(() => {
-      dispatch(
-        getSingleProduct(offer !== null ? offer.product.id : product.id)
-      );
+      dispatch(getSingleProduct(offer !== null ? offer.product.id : product.id));
       dispatch(getGivenOffers());
       dispatch(getReceivedOffers());
     }, 500);
