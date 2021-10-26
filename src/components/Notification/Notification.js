@@ -28,7 +28,7 @@ const Notification = (props) => {
     }, 20);
     setIntervalId(id);
   };
-
+  // her 20ms 'de bir çalışarak notification barın genişliğini değiştirir.
   const handleStopTimer = () => {
     clearInterval(intervalId);
   };

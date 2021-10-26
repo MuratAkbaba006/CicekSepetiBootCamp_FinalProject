@@ -70,6 +70,7 @@ const Offer = ({ offer, name }) => {
   };
 
   const GaveOfferStatusControl = (status, isSold) => {
+    // Verilen Teklifler
     if (status === 'accepted' && isSold === false) {
       return (
         <GaveOffersAcceptArea>

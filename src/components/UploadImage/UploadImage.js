@@ -38,7 +38,7 @@ const UploadImage = () => {
       dispatch(addNotification({ id: uuid(), type: 'ERROR', message: 'Resim boyutu çok büyük' }));
     },
   });
-
+  // react-dropzone paketi kullanılarak resim upload işlemleri gerçekleştirildi.
   const handleClickDelete = () => {
     setFile(null);
     setIsCompleteUpload(false);

@@ -76,6 +76,9 @@ const UploadProductForm = () => {
       setSubmitting(false);
     }
   };
+  // form submit olduğunda ilk olarak resim yüklenmişmi kontrolü gerçekleştirilir. Eğer resim yüklenmişse
+  // ilgili değerler Post edilir ve ürün yükleme işlemi başarılı notification'u karşımıza çıkar devamında
+  // kullanıcı anasayfaya yönlendirilir.
   return (
     <FormContainer>
       <Formik

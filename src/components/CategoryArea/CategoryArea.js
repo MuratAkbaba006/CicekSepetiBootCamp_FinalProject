@@ -20,6 +20,7 @@ const CategoryArea = () => {
     history.push({ search: params.toString() });
     setCurrent(id);
     dispatch(getByCategory(id.toString()));
+    // bir kategoriye tıklandığında ilgili query'e göre ürünleri getirir.
   };
   useEffect(() => {
     if (categories.length === 0) {

@@ -21,6 +21,7 @@ export const PostImage = (file, setProgress, setIsCompleteUpload) => (dispatch) 
       }, 100);
     })
     .catch((error) => dispatch({ type: 'POST_IMAGE_ERROR', payload: error }));
+  // Resmin upload edilmesi ve onUploadProgress ile yüklenme yüzdesi takibi
 };
 
 export const PostImageClear = () => (dispatch) => {
@@ -96,4 +97,5 @@ export const AddProduct =
           );
           return data;
         });
+      // ilk olarak ilgili category, brand, color ve status bilgileri alındı daha sonra ürün eklendi.
     };

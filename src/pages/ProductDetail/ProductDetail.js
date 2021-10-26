@@ -94,6 +94,10 @@ const ProductDetail = () => {
         }
       });
     }
+    // ilk olarak givenOffer'lar var mı kontrolü, eğer varsa detayında olduğumuz ürüne verilmiş
+    // olan bir teklif varmı kontrolü gerçekleşir. Eşleşme varsa ilgili state değerleri set edilir
+    // eşleşme olmayan her durumda counter değeri 1 artırılarak hiç eşleşme olmamışsa ilgili
+    // state değerlerinin set edilmesi sağlanır.
   };
   useEffect(() => {
     if (auth_token !== undefined) {

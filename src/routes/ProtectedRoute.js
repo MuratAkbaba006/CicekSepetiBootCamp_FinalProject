@@ -13,3 +13,4 @@ const ProtectedRoute = ({ children, path }) => {
 };
 
 export default ProtectedRoute;
+// token bilgisi ile erişilen routelar için kontrolü sağlar eğer token değeri yoksa anaSayfaya yönlendirir.

@@ -18,3 +18,5 @@ AxiosPrivate.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${auth_token}`;
   return config;
 });
+// Burada axios interceptors kullanılarak her istek öncesinde ilgili token değerinin
+// cookiden alınarak headers'a eklenmesi sağlanmıştır.

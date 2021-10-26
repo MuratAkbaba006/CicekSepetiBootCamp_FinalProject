@@ -5,7 +5,7 @@ import { ModalWrapper, ModalBackdrop, ModalBox } from './ScModal';
 const Modal = forwardRef((props, ref) => {
   // function component'de ref yapısını kullanabilmek için forward ref içerisinde componenti kullanmalıyoz
   const [display, setDisplay] = useState(false);
-  // modal açıdığında default değeri true
+  // modal açıdığında default değeri false
 
   const open = () => {
     setDisplay(true);

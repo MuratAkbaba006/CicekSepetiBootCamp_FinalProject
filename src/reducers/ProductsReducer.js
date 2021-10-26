@@ -54,6 +54,7 @@ const ProductsReducer = (state = ProductState, action) => {
         };
       }
     }
+    // gelen kategori id bilgisi 1 ise tüm ürünleri değil ise ilgili id değerine sahip ürünleri set eder
     case 'FETCH_SINGLE_PRODUCT_START': {
       return {
         ...state,
