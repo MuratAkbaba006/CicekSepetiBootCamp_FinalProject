@@ -7,7 +7,7 @@
     "complexity": 0,
     "camelcase": 0,
     "no-console": "off",
-    "react/jsx-filename-extension": [1, { "allow": "as-needed" }],
+    "react/jsx-filename-extension": 0,
     "react/prop-types": 0,
     "arrow-body-style": 0,
     "react/destructuring-assignment":0,
@@ -28,8 +28,7 @@
     "jsx-a11y/anchor-is-valid":0,
     "react/no-array-index-key":0,
     "no-param-reassign":0,
-    "array-callback-return":0,
-    "no-unused-vars":0
+    "array-callback-return":0
   },
   "env": {
       "browser": true,

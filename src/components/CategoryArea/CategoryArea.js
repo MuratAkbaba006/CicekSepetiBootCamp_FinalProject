@@ -29,6 +29,12 @@ const CategoryArea = () => {
     dispatch(getByCategory(current));
   }, [dispatch, categories.current]);
 
+  useEffect(() => {
+    if (urlParams.get('category') === null) {
+      setCurrent('1');
+      dispatch(getByCategory('1'));
+    }
+  }, [urlParams]);
   return (
     <CategoryAreaContainer>
       {allcategories.map((category) => (
