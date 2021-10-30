@@ -21,5 +21,8 @@
 - ***styled-components*** for styling operations
 - ***uuid*** for Notification id
 - ***react-switch*** for switch when upload a product
-
-
+### Performance Metrics
+#### Desktop
+![Ekran Görüntüsü (784)](https://user-images.githubusercontent.com/44754934/139539437-6ca332c1-8b4d-47db-8a5c-c800b47b1599.png)
+#### Mobile
+![Ekran Görüntüsü (785)](https://user-images.githubusercontent.com/44754934/139539662-74374b45-74a0-4974-a2c1-cfe58527f952.png)
